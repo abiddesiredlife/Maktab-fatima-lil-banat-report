@@ -1,450 +1,87 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>مکتب فاطمة للبنات - رپورٹ کارڈ</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet"/>
-    <style>
-        :root {
-            --theme-color: #006400;
-            --theme-light: #e8f5e9;
-        }
-        body {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            background: #f8f9fa;
-            direction: rtl;
-            text-align: right;
-            margin: 0;
-            padding: 15px;
-            line-height: 1.5;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 20px;
-        }
-        header {
-            grid-column: 1 / -1;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-            border-bottom: 6px solid var(--theme-color);
-        }
-        header h1 {
-            font-family: 'Amiri', serif;
-            color: var(--theme-color);
-            margin: 0;
-            font-size: 2.4rem;
-        }
-        header p { margin: 4px 0 0; color: #555; }
-        .class-tabs {
-            grid-column: 1 / -1;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 10px 0;
-        }
-        .class-btn {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .class-btn.active { box-shadow: 0 0 0 4px white; }
-        .admin-panel {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th { background: var(--theme-color); color: white; }
-        .btn {
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .btn-primary { background: var(--theme-color); }
-        .btn-secondary { background: #6c757d; }
-        .report-container {
-            background: white;
-            width: 210mm;
-            min-height: 297mm;
-            margin: 0 auto;
-            padding: 20px 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            border: 8px solid var(--theme-color);
-            position: relative;
-            overflow: hidden;
-        }
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-40deg);
-            font-size: 4.5rem;
-            color: rgba(0,100,0,0.08);
-            pointer-events: none;
-        }
-        .report-header { text-align: center; margin-bottom: 15px; }
-        .report-header h1 {
-            font-family: 'Amiri', serif;
-            color: var(--theme-color);
-            margin: 0;
-        }
-        .student-info {
-            display: flex;
-            justify-content: space-between;
-            margin: 12px 0;
-            font-size: 1.1rem;
-        }
-        .preview-table th { font-size: 0.95rem; }
-        .preview-table td { font-size: 0.9rem; padding: 6px; }
-        .result-section {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .result-box {
-            border: 2px solid var(--theme-color);
-            padding: 12px;
-            border-radius: 8px;
-            width: 48%;
-            text-align: center;
-        }
-        .signatures {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-            font-size: 1.05rem;
-        }
-        .signature { text-align: center; width: 45%; }
-        .signature-line { border-top: 1px solid #333; margin: 25px auto 8px; width: 80%; }
-        @media print {
-            .admin-panel, .class-tabs, header, .students-list, .btn { display: none !important; }
-            .container { display: block; }
-            .report-container {
-                box-shadow: none;
-                border: none;
-                width: 100%;
-                padding: 15mm 20mm;
-            }
-            @page { margin: 10mm; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>مکتب فاطمة للبنات - ٹیسٹ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; text-align: right; padding: 15px; background: #f8f9fa; }
+    .report { border: 6px solid #006400; padding: 20px; max-width: 210mm; margin: 0 auto; background: white; min-height: 280mm; position: relative; }
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(-35deg); font-size: 4rem; color: rgba(0,100,0,0.1); pointer-events: none; }
+    table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+    th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
+    th { background: #006400; color: white; }
+    .btn { padding: 10px 20px; background: #006400; color: white; border: none; border-radius: 6px; margin: 8px; cursor: pointer; }
+    .info { margin: 12px 0; font-size: 1.1rem; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>مکتب فاطمة للبنات</h1>
-        <p>اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</p>
-    </header>
+<h2 style="color:#006400; text-align:center;">ٹیسٹ رپورٹ کارڈ</h2>
 
-    <div class="class-tabs" id="class-tabs"></div>
+<div style="margin-bottom:20px;">
+  <input id="sname" placeholder="طالبہ کا نام" style="width:80%; padding:10px; font-size:1.1rem;">
+  <br><br>
+  <button class="btn" onclick="fillPreview()">پیش نظارہ دکھائیں</button>
+</div>
 
-    <div class="admin-panel">
-        <h2>ان پٹ</h2>
-        <div class="form-group">
-            <label>طالبہ کا نام</label>
-            <input id="student-name" type="text"/>
-        </div>
-        <div class="form-group">
-            <label id="parent-label">شوہر/والد کا نام</label>
-            <input id="parent-name" type="text"/>
-        </div>
-
-        <table id="marks-table">
-            <thead>
-                <tr>
-                    <th>مضمون</th>
-                    <th>کل</th>
-                    <th>حاصل</th>
-                </tr>
-            </thead>
-            <tbody id="marks-tbody"></tbody>
-            <tfoot>
-                <tr style="font-weight:bold; background:#f0f8f0;">
-                    <td>کل</td>
-                    <td id="total-max">-</td>
-                    <td id="total-obtained">0</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div style="margin:15px 0; text-align:center;">
-            <button class="btn btn-secondary" onclick="clearForm()">نیا</button>
-            <button class="btn btn-primary" onclick="generatePreview()">پیش نظارہ بنائیں</button>
-            <button class="btn btn-primary" onclick="downloadPDF()">پی ڈی ایف</button>
-        </div>
-    </div>
-
-    <div class="report-container" id="report">
-        <div class="watermark">مکتب فاطمة للبنات</div>
-
-        <div class="report-header">
-            <h1>مکتب فاطمة للبنات</h1>
-            <p>اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</p>
-            <p style="margin-top:8px;">سالانہ امتحان فروری ۲۰۲۵</p>
-        </div>
-
-        <div class="student-info">
-            <div><strong>نام طالبہ :</strong> <span id="p-name">-</span></div>
-            <div><strong id="p-parent-lbl">شوہر/والد :</strong> <span id="p-parent">-</span></div>
-        </div>
-        <div class="student-info">
-            <div><strong>کورس :</strong> <span id="p-class">-</span></div>
-            <div><strong>سال تعلیمی :</strong> 2024-2025</div>
-        </div>
-
-        <table class="preview-table">
-            <thead>
-                <tr>
-                    <th>مضمون</th>
-                    <th>کل نمبر</th>
-                    <th>حاصل نمبر</th>
-                </tr>
-            </thead>
-            <tbody id="preview-body"></tbody>
-            <tfoot>
-                <tr style="font-weight:bold;">
-                    <td>کل</td>
-                    <td id="p-total-max">-</td>
-                    <td id="p-obtained">0</td>
-                </tr>
-            </tfoot>
-        </table>
-
-        <div class="result-section">
-            <div class="result-box">
-                <div>فیصد</div>
-                <div style="font-size:1.8rem;" id="p-perc">0.0 %</div>
-                <div id="p-status">(PASS)</div>
-            </div>
-            <div class="result-box">
-                <div>گریڈ</div>
-                <div style="font-size:2.2rem;" id="p-grade">F</div>
-            </div>
-        </div>
-
-        <div class="signatures">
-            <div class="signature">
-                <div class="signature-line"></div>
-                <div>ناظمہ مکتب</div>
-            </div>
-            <div class="signature">
-                <div class="signature-line"></div>
-                <div>صدر مدرسہ</div>
-            </div>
-        </div>
-    </div>
+<div class="report">
+  <div class="watermark">مکتب فاطمة للبنات</div>
+  
+  <h1 style="color:#006400; text-align:center; margin:0;">مکتب فاطمة للبنات</h1>
+  <p style="text-align:center; margin:4px 0;">اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</p>
+  
+  <div class="info"><strong>نام طالبہ :</strong> <span id="pname">-</span></div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>مضمون</th>
+        <th>کل</th>
+        <th>حاصل</th>
+      </tr>
+    </thead>
+    <tbody id="ptbody">
+      <!-- will be filled by JS -->
+    </tbody>
+    <tfoot>
+      <tr style="font-weight:bold;">
+        <td>کل</td>
+        <td>300</td>
+        <td id="ptotal">0</td>
+      </tr>
+    </tfoot>
+  </table>
+  
+  <div style="margin-top:20px; font-size:1.3rem; text-align:center;">
+    فیصد: <span id="pperc">0.0</span>%  
+    <br>گریڈ: <span id="pgrade">F</span>
+  </div>
 </div>
 
 <script>
-    let currentClass = 0;
-
-    const classes = [
-        {
-            name: "شعبہ ناظرہ قرآن",
-            color: "#006400",
-            parent: "شوہر کا نام",
-            subjects: [
-                {n:"ناظرہ قرآن", t:100},
-                {n:"عقائد", t:50},
-                {n:"مسنون دعائیں", t:50},
-                {n:"اردو", t:100}
-            ]
-        },
-        {
-            name: "مومنہ کورس دوم سال",
-            color: "#B8860B",
-            parent: "والد کا نام",
-            subjects: [
-                {n:"ناظرہ قرآن", t:100},
-                {n:"حفظ سورہ", t:100},
-                {n:"حفظ احادیث", t:100},
-                {n:"مسنون دعائیں", t:100},
-                {n:"عقائد", t:10},
-                {n:"اردو تقریری", t:50},
-                {n:"عقائد اسلام", t:90},
-                {n:"مسائل شرعی", t:100},
-                {n:"سیرت النبی ﷺ", t:100},
-                {n:"اخلاقی تعلیم", t:100},
-                {n:"عربی زبان", t:100},
-                {n:"اردو تحریری", t:50}
-            ]
-        },
-        {
-            name: "مومنہ کورس سوم سال",
-            color: "#001F3F",
-            parent: "والد کا نام",
-            subjects: [
-                {n:"ناظرہ قرآن", t:100},
-                {n:"حفظ سورہ", t:100},
-                {n:"حفظ احادیث", t:100},
-                {n:"مسنون دعائیں", t:100},
-                {n:"عقائد", t:10},
-                {n:"اردو تقریری", t:50},
-                {n:"عقائد اسلام", t:90},
-                {n:"مسائل شرعی", t:100},
-                {n:"سیرت النبی ﷺ", t:100},
-                {n:"اخلاقی تعلیم", t:100},
-                {n:"عربی زبان", t:100},
-                {n:"اردو تحریری", t:50}
-            ]
-        }
-    ];
-
-    function init() {
-        const tabs = document.getElementById("class-tabs");
-        classes.forEach((c, i) => {
-            const btn = document.createElement("button");
-            btn.className = "class-btn" + (i===0?" active":"");
-            btn.style.background = c.color;
-            btn.textContent = c.name;
-            btn.onclick = () => switchClass(i);
-            tabs.appendChild(btn);
-        });
-        switchClass(0);
-    }
-
-    function switchClass(idx) {
-        currentClass = idx;
-        document.querySelectorAll(".class-btn").forEach((b,i)=> b.classList.toggle("active", i===idx));
-        const c = classes[idx];
-        document.documentElement.style.setProperty("--theme-color", c.color);
-        document.getElementById("parent-label").textContent = c.parent;
-
-        const tbody = document.getElementById("marks-tbody");
-        tbody.innerHTML = "";
-        c.subjects.forEach(s => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>\( {s.n}</td><td> \){s.t}</td><td><input type="number" min="0" max="\( {s.t}" value="0" class="mark-in" data-name=" \){s.n}"></td>`;
-            tbody.appendChild(tr);
-        });
-
-        document.querySelectorAll(".mark-in").forEach(el => el.oninput = updateSummary);
-        updateSummary();
-    }
-
-    function updateSummary() {
-        let sum = 0;
-        document.querySelectorAll(".mark-in").forEach(i => sum += Number(i.value)||0);
-        const c = classes[currentClass];
-        const perc = c.subjects.reduce((a,s)=>a+s.t,0);
-        document.getElementById("total-max").textContent = perc;
-        document.getElementById("total-obtained").textContent = sum;
-    }
-
-    function generatePreview() {
-        const name = document.getElementById("student-name").value.trim();
-        if (!name) {
-            alert("طالبہ کا نام درج کریں");
-            return;
-        }
-
-        const c = classes[currentClass];
-        let obtained = 0;
-        const marks = {};
-        document.querySelectorAll(".mark-in").forEach(inp => {
-            const v = Number(inp.value)||0;
-            marks[inp.dataset.name] = v;
-            obtained += v;
-        });
-
-        const total = c.subjects.reduce((a,s)=>a+s.t,0);
-        const perc = total ? ((obtained / total) * 100).toFixed(1) : 0;
-
-        // Fill preview
-        document.getElementById("p-name").textContent = name;
-        document.getElementById("p-parent").textContent = document.getElementById("parent-name").value.trim() || "-";
-        document.getElementById("p-parent-lbl").textContent = c.parent + " :";
-        document.getElementById("p-class").textContent = c.name;
-
-        const body = document.getElementById("preview-body");
-        body.innerHTML = "";
-        c.subjects.forEach(s => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td>\( {s.n}</td><td> \){s.t}</td><td>${marks[s.n] || 0}</td>`;
-            body.appendChild(tr);
-        });
-
-        document.getElementById("p-total-max").textContent = total;
-        document.getElementById("p-obtained").textContent = obtained;
-        document.getElementById("p-perc").textContent = perc + " %";
-
-        const status = document.getElementById("p-status");
-        if (perc >= 35) {
-            status.textContent = "(PASS)";
-            status.style.color = "green";
-        } else {
-            status.textContent = "(FAIL)";
-            status.style.color = "red";
-        }
-
-        document.getElementById("p-grade").textContent = 
-            perc >= 90 ? "A+" :
-            perc >= 75 ? "A" :
-            perc >= 60 ? "B" :
-            perc >= 35 ? "C" : "F";
-    }
-
-    function downloadPDF() {
-        const name = document.getElementById("p-name").textContent.trim() || "report";
-        const element = document.getElementById("report");
-
-        html2pdf()
-            .from(element)
-            .set({
-                margin: 0.7,
-                filename: `${name}_report.pdf`,
-                html2canvas: { scale: 2.3, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            })
-            .save();
-    }
-
-    function clearForm() {
-        document.getElementById("student-name").value = "";
-        document.getElementById("parent-name").value = "";
-        document.querySelectorAll(".mark-in").forEach(i => i.value = 0);
-        updateSummary();
-        // Optional: clear preview too
-        generatePreview(); // will show defaults
-    }
-
-    window.onload = init;
+function fillPreview() {
+  const name = document.getElementById("sname").value.trim() || "طالبہ ٹیسٹ";
+  document.getElementById("pname").textContent = name;
+  
+  const subjects = [
+    "ناظرہ قرآن", "عقائد", "مسنون دعائیں", "اردو"
+  ];
+  
+  let html = "";
+  subjects.forEach(sub => {
+    html += `<tr><td>${sub}</td><td>100</td><td>75</td></tr>`;
+  });
+  
+  document.getElementById("ptbody").innerHTML = html;
+  document.getElementById("ptotal").textContent = "300";
+  document.getElementById("pperc").textContent = "75.0";
+  document.getElementById("pgrade").textContent = "A";
+  
+  alert("پیش نظارہ اپ ڈیٹ ہو گیا — نیچے دیکھیں");
+}
 </script>
+
 </body>
 </html>
