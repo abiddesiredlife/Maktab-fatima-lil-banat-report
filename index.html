@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مکتب فاطمة للبنات - رپورٹ کارڈ مینجمنٹ سسٹم</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&amp;family=Amiri:wght@700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
         :root {
             --theme-color: #006400;
             --theme-light: #e6f0e6;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Noto Nastaliq Urdu', serif;
             background: linear-gradient(135deg, #f5f5f5, #e0f0e0);
@@ -43,15 +39,8 @@
             justify-content: space-between;
             border-bottom: 8px solid var(--theme-color);
         }
-        .logo-header {
-            width: 90px;
-            height: 90px;
-            object-fit: contain;
-        }
-        .header-title {
-            text-align: center;
-            flex: 1;
-        }
+        .logo-header { width: 90px; height: 90px; object-fit: contain; }
+        .header-title { text-align: center; flex: 1; }
         .header-title h1 {
             font-family: 'Amiri', serif;
             font-size: 2.8rem;
@@ -59,10 +48,7 @@
             margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        .header-title p {
-            font-size: 1.1rem;
-            color: #555;
-        }
+        .header-title p { font-size: 1.1rem; color: #555; }
         .class-tabs {
             grid-column: 1 / -1;
             display: flex;
@@ -83,6 +69,10 @@
             cursor: pointer;
             transition: all 0.3s;
             color: white;
+        }
+        .class-btn.active {
+            box-shadow: 0 0 0 5px rgba(255,255,255,0.6);
+            transform: scale(1.08);
         }
         .admin-panel {
             background: white;
@@ -112,7 +102,6 @@
             border: 2px solid #ddd;
             border-radius: 8px;
             font-size: 1.05rem;
-            transition: border 0.3s;
         }
         .form-group input:focus {
             border-color: var(--theme-color);
@@ -134,11 +123,12 @@
             color: white;
         }
         .marks-table input {
-            width: 80px;
+            width: 90px;
             text-align: center;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 1.1rem;
         }
         .total-row {
             font-weight: 700;
@@ -176,14 +166,8 @@
             background: var(--theme-color);
             color: white;
         }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0,100,0,0.3);
-        }
-        .btn-secondary {
-            background: #555;
-            color: white;
-        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,100,0,0.3); }
+        .btn-secondary { background: #555; color: white; }
         .report-container {
             position: relative;
             background: white;
@@ -231,9 +215,7 @@
             padding: 10px 15px;
             border-radius: 8px;
         }
-        .student-info strong {
-            color: var(--theme-color);
-        }
+        .student-info strong { color: var(--theme-color); }
         .class-name {
             text-align: center;
             font-size: 1.6rem;
@@ -273,6 +255,8 @@
             padding: 15px 25px;
             border-radius: 10px;
             border: 3px solid var(--theme-color);
+            width: 48%;
+            text-align: center;
         }
         .signatures {
             display: flex;
@@ -294,8 +278,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-35deg);
-            font-size: 4.5rem;
-            color: rgba(0, 100, 0, 0.08);
+            font-size: 4.8rem;
+            color: rgba(0, 100, 0, 0.07);
             font-weight: 700;
             pointer-events: none;
             z-index: 0;
@@ -332,25 +316,16 @@
             font-size: 0.9rem;
         }
         @media (max-width: 1100px) {
-            .container {
-                grid-template-columns: 1fr;
-            }
-            .report-container {
-                width: 100%;
-                max-width: 210mm;
-                margin: 20px auto;
-            }
+            .container { grid-template-columns: 1fr; }
+            .report-container { width: 100%; max-width: 210mm; margin: 20px auto; }
         }
         @media print {
-            .admin-panel, .class-tabs, .students-list, header > *:not(.header-title) {
+            .admin-panel, .class-tabs, .students-list, header > button, .btn {
                 display: none !important;
-            }
-            .container {
-                display: block;
             }
             .report-container {
                 box-shadow: none;
-                border: none;
+                border: 8px solid var(--theme-color);
                 margin: 0;
                 width: 100%;
             }
@@ -370,9 +345,7 @@
         </header>
 
         <!-- Class Tabs -->
-        <div class="class-tabs" id="class-tabs">
-            <!-- JS will populate -->
-        </div>
+        <div class="class-tabs" id="class-tabs"></div>
 
         <!-- Admin Panel -->
         <div class="admin-panel">
@@ -380,7 +353,7 @@
             
             <div class="form-group">
                 <label>طالبہ کا نام</label>
-                <input type="text" id="student-name" placeholder="طالبہ کا نام درج کریں">
+                <input type="text" id="student-name" placeholder="طالبہ کا مکمل نام درج کریں">
             </div>
             
             <div class="form-group">
@@ -393,7 +366,7 @@
                 <input type="text" id="academic-year" value="2024-2025" readonly>
             </div>
 
-            <h3 style="margin:20px 0 10px; color:var(--theme-color);">نمبر درج کریں</h3>
+            <h3 style="margin:20px 0 10px; color:var(--theme-color);">مضامین کے نمبر درج کریں</h3>
             <table class="marks-table" id="marks-table">
                 <thead>
                     <tr>
@@ -404,7 +377,7 @@
                 </thead>
                 <tbody id="marks-tbody"></tbody>
                 <tfoot>
-                    <tr class="total-row" id="total-row">
+                    <tr class="total-row">
                         <td><strong>کل</strong></td>
                         <td id="total-max">300</td>
                         <td id="total-obtained">0</td>
@@ -425,7 +398,7 @@
 
             <div style="margin-top:25px; text-align:center;">
                 <button class="btn btn-secondary" onclick="clearForm()">نئی طالبہ</button>
-                <button class="btn btn-primary" onclick="saveStudent()">محفوظ کریں</button>
+                <button class="btn btn-primary" onclick="submitAndPreview()">Submit & Preview</button>
                 <button class="btn btn-primary" onclick="downloadReport()">پی ڈی ایف ڈاؤن لوڈ</button>
             </div>
         </div>
@@ -433,10 +406,8 @@
         <!-- Report Preview -->
         <div>
             <div class="report-container" id="report-card">
-                <!-- Watermark -->
                 <div class="watermark">مکتب فاطمة للبنات</div>
                 
-                <!-- Header -->
                 <div class="report-header">
                     <img src="logo.png" alt="لوگو" style="float:left;">
                     <h1>مکتب فاطمة للبنات</h1>
@@ -444,7 +415,6 @@
                     <div class="exam-title" id="exam-title">سالانہ امتحان فروری - 2025</div>
                 </div>
 
-                <!-- Student Info -->
                 <div class="student-info">
                     <div><strong>طالبہ کا نام :</strong> <span id="p-student-name">-</span></div>
                     <div><strong id="p-parent-label">شوہر کا نام :</strong> <span id="p-parent-name">-</span></div>
@@ -454,10 +424,8 @@
                     <div><strong>کورس :</strong> <span id="p-class-name">-</span></div>
                 </div>
 
-                <!-- Class Name -->
                 <div class="class-name" id="p-class-display">شعبہ ناظرہ قرآن</div>
 
-                <!-- Marks Table -->
                 <table class="preview-table" id="preview-table">
                     <thead>
                         <tr>
@@ -476,20 +444,18 @@
                     </tfoot>
                 </table>
 
-                <!-- Result -->
                 <div class="result-section">
                     <div>
                         <strong>فیصد نمبر :</strong><br>
-                        <span id="p-percentage" style="font-size:2rem;">66.6</span><span style="font-size:1.2rem;">%</span>
+                        <span id="p-percentage" style="font-size:2rem;">0.0</span><span style="font-size:1.2rem;">%</span>
                         <span id="p-pass-status" style="color:#006400; font-weight:700;">(PASS)</span>
                     </div>
                     <div>
                         <strong>گریڈ :</strong><br>
-                        <span id="p-grade" style="font-size:2.2rem; color:#006400;">B</span>
+                        <span id="p-grade" style="font-size:2.2rem; color:#006400;">F</span>
                     </div>
                 </div>
 
-                <!-- Signatures -->
                 <div class="signatures">
                     <div class="signature">
                         <div class="signature-line"></div>
@@ -505,7 +471,7 @@
 
         <!-- Students List -->
         <div class="students-list">
-            <h2 style="margin-bottom:15px; color:var(--theme-color);">محفوظ شدہ طالبات</h2>
+            <h2 style="margin-bottom:15px; color:var(--theme-color);">محفوظ شدہ طالبات (اس سیشن میں)</h2>
             <table id="students-table">
                 <thead>
                     <tr>
@@ -520,14 +486,15 @@
                 </thead>
                 <tbody id="students-tbody"></tbody>
             </table>
+            <p style="margin-top:12px; font-size:0.95rem; color:#555;">
+                نوٹ: یہ ڈیٹا صرف موجودہ ٹیب/سیشن میں محفوظ رہے گا۔ براؤزر بند کرنے یا ریفریش کرنے پر ڈیٹا ختم ہو جائے گا۔
+            </p>
         </div>
     </div>
 
     <script>
-        // Data
         let currentClassIndex = 0;
-        let currentMarks = {};
-        let students = JSON.parse(localStorage.getItem('maktabStudents')) || [];
+        let students = window.maktabStudents || [];
         let editingId = null;
 
         const classData = [
@@ -616,119 +583,62 @@
             const cls = classData[currentClassIndex];
             document.getElementById('parent-label').textContent = cls.parentLabel;
             
-            // Render admin table
             const tbody = document.getElementById('marks-tbody');
             tbody.innerHTML = '';
-            currentMarks = {};
             
             cls.subjects.forEach(sub => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${sub.name}</td>
                     <td>${sub.total}</td>
-                    <td><input type="number" class="obtained-input" data-name="\( {sub.name}" min="0" max=" \){sub.total}" value="0"></td>
+                    <td><input type="number" class="obtained-input" data-name="${sub.name}" min="0" max="${sub.total}" value="0"></td>
                 `;
                 tbody.appendChild(tr);
             });
             
             document.getElementById('total-max').textContent = cls.totalMax;
             
-            // Attach listeners
             document.querySelectorAll('.obtained-input').forEach(input => {
-                input.addEventListener('input', () => {
-                    currentMarks[input.dataset.name] = parseInt(input.value) || 0;
-                    calculateSummary();
-                    updatePreview();
-                });
+                input.addEventListener('input', calculateAdminSummary);
             });
             
-            calculateSummary();
-            updatePreview();
+            calculateAdminSummary();
         }
 
-        function calculateSummary() {
+        function calculateAdminSummary() {
+            let obtained = 0;
+            document.querySelectorAll('.obtained-input').forEach(inp => {
+                obtained += parseInt(inp.value) || 0;
+            });
             const cls = classData[currentClassIndex];
-            let obtained = Object.values(currentMarks).reduce((a, b) => a + b, 0);
-            let perc = cls.totalMax > 0 ? ((obtained / cls.totalMax) * 100).toFixed(1) : 0;
+            const perc = cls.totalMax > 0 ? ((obtained / cls.totalMax) * 100).toFixed(1) : 0;
             
             document.getElementById('total-obtained').textContent = obtained;
             document.getElementById('percentage').textContent = perc;
             document.getElementById('grade-display').textContent = getGrade(parseFloat(perc));
         }
 
-        function updatePreview() {
-            const cls = classData[currentClassIndex];
-            const name = document.getElementById('student-name').value.trim() || '-';
-            const parent = document.getElementById('parent-name').value.trim() || '-';
-            
-            document.getElementById('p-student-name').textContent = name;
-            document.getElementById('p-parent-name').textContent = parent;
-            document.getElementById('p-parent-label').textContent = cls.parentLabel + " :";
-            document.getElementById('p-class-name').textContent = cls.name;
-            document.getElementById('p-class-display').textContent = cls.name;
-            
-            // Preview table body
-            const tbody = document.getElementById('preview-tbody');
-            tbody.innerHTML = '';
-            
-            let obtainedTotal = 0;
-            
-            cls.subjects.forEach(sub => {
-                const obt = currentMarks[sub.name] || 0;
-                obtainedTotal += obt;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${sub.name}</td>
-                    <td>${sub.total}</td>
-                    <td>${obt}</td>
-                `;
-                tbody.appendChild(tr);
+        function collectMarks() {
+            const inputs = document.querySelectorAll('.obtained-input');
+            let marksObj = {};
+            let obtained = 0;
+            inputs.forEach(inp => {
+                const val = parseInt(inp.value) || 0;
+                marksObj[inp.dataset.name] = val;
+                obtained += val;
             });
-            
-            document.getElementById('p-total-max').textContent = cls.totalMax;
-            document.getElementById('p-total-obtained').textContent = obtainedTotal;
-            
-            const perc = cls.totalMax > 0 ? ((obtainedTotal / cls.totalMax) * 100).toFixed(1) : 0;
-            const grade = getGrade(parseFloat(perc));
-            
-            document.getElementById('p-percentage').textContent = perc;
-            document.getElementById('p-grade').textContent = grade;
-            document.getElementById('p-pass-status').textContent = parseFloat(perc) >= 35 ? '(PASS)' : '(FAIL)';
-            document.getElementById('p-pass-status').style.color = parseFloat(perc) >= 35 ? '#006400' : '#c00';
+            return { marksObj, obtained };
         }
 
-        function renderStudentsList() {
-            const tbody = document.getElementById('students-tbody');
-            tbody.innerHTML = '';
-            
-            students.forEach((student, index) => {
-                const cls = classData.find(c => c.id === student.classId) || classData[0];
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>${student.name}</td>
-                    <td>${student.parent}</td>
-                    <td>${cls.name}</td>
-                    <td>${student.percentage}%</td>
-                    <td>${student.grade}</td>
-                    <td>
-                        <button class="action-btn" style="background:#006400;color:white;" onclick="loadStudent(${student.id})">کھولیں</button>
-                        <button class="action-btn" style="background:#c00;color:white;" onclick="deleteStudent(${student.id})">حذف</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function saveStudent() {
+        function submitAndPreview() {
             const name = document.getElementById('student-name').value.trim();
             if (!name) {
-                alert('طالبہ کا نام درج کریں');
+                alert('براہ مہربانی طالبہ کا نام درج کریں');
                 return;
             }
             
             const cls = classData[currentClassIndex];
-            let obtained = Object.values(currentMarks).reduce((a, b) => a + b, 0);
+            const { marksObj, obtained } = collectMarks();
             const perc = cls.totalMax > 0 ? ((obtained / cls.totalMax) * 100).toFixed(1) : 0;
             const grade = getGrade(parseFloat(perc));
             
@@ -737,7 +647,7 @@
                 classId: cls.id,
                 name: name,
                 parent: document.getElementById('parent-name').value.trim(),
-                marks: { ...currentMarks },
+                marks: marksObj,
                 percentage: perc,
                 grade: grade,
                 totalMax: cls.totalMax
@@ -750,10 +660,73 @@
                 students.push(studentData);
             }
             
-            localStorage.setItem('maktabStudents', JSON.stringify(students));
+            window.maktabStudents = students;
             renderStudentsList();
-            alert('رپورٹ محفوظ ہو گئی!');
-            // Do not clear form after save
+            
+            populatePreview(name, cls, marksObj, obtained, perc, grade);
+            
+            alert('طالبہ کی تفصیلات اس سیشن میں محفوظ ہو گئیں اور رپورٹ تیار ہو گئی!');
+            editingId = null;
+        }
+
+        function populatePreview(studentName, cls, marksObj, obtained, perc, grade) {
+            document.getElementById('p-student-name').textContent = studentName;
+            document.getElementById('p-parent-name').textContent = document.getElementById('parent-name').value.trim() || '-';
+            document.getElementById('p-parent-label').textContent = cls.parentLabel + " :";
+            document.getElementById('p-class-name').textContent = cls.name;
+            document.getElementById('p-class-display').textContent = cls.name;
+            
+            const tbody = document.getElementById('preview-tbody');
+            tbody.innerHTML = '';
+            
+            cls.subjects.forEach(sub => {
+                const obt = marksObj[sub.name] || 0;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${sub.name}</td>
+                    <td>${sub.total}</td>
+                    <td>${obt}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            document.getElementById('p-total-max').textContent = cls.totalMax;
+            document.getElementById('p-total-obtained').textContent = obtained;
+            
+            document.getElementById('p-percentage').textContent = perc;
+            document.getElementById('p-grade').textContent = grade;
+            
+            const passEl = document.getElementById('p-pass-status');
+            if (parseFloat(perc) >= 35) {
+                passEl.textContent = '(PASS)';
+                passEl.style.color = '#006400';
+            } else {
+                passEl.textContent = '(FAIL)';
+                passEl.style.color = '#c00';
+            }
+        }
+
+        function renderStudentsList() {
+            const tbody = document.getElementById('students-tbody');
+            tbody.innerHTML = '';
+            
+            students.forEach((student, index) => {
+                const cls = classData.find(c => c.id === student.classId) || classData[0];
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${student.name}</td>
+                    <td>${student.parent || '-'}</td>
+                    <td>${cls.name}</td>
+                    <td>${student.percentage}%</td>
+                    <td>${student.grade}</td>
+                    <td>
+                        <button class="action-btn" style="background:#006400;color:white;" onclick="loadStudent(${student.id})">کھولیں</button>
+                        <button class="action-btn" style="background:#c00;color:white;" onclick="deleteStudent(${student.id})">حذف</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
         function loadStudent(id) {
@@ -762,7 +735,6 @@
             
             editingId = student.id;
             
-            // Find class index
             currentClassIndex = classData.findIndex(c => c.id === student.classId);
             if (currentClassIndex === -1) currentClassIndex = 0;
             
@@ -770,27 +742,27 @@
             updateTheme();
             loadCurrentClass();
             
-            // Fill form
             document.getElementById('student-name').value = student.name;
             document.getElementById('parent-name').value = student.parent || '';
             
-            // Fill marks
-            currentMarks = { ...student.marks };
             document.querySelectorAll('.obtained-input').forEach(input => {
                 const subName = input.dataset.name;
-                if (currentMarks[subName] !== undefined) {
-                    input.value = currentMarks[subName];
+                if (student.marks[subName] !== undefined) {
+                    input.value = student.marks[subName];
                 }
             });
             
-            calculateSummary();
-            updatePreview();
+            calculateAdminSummary();
+            
+            const cls = classData[currentClassIndex];
+            const obtained = Object.values(student.marks).reduce((a, b) => a + b, 0);
+            populatePreview(student.name, cls, student.marks, obtained, student.percentage, student.grade);
         }
 
         function deleteStudent(id) {
             if (!confirm('کیا آپ واقعی یہ رپورٹ حذف کرنا چاہتے ہیں؟')) return;
             students = students.filter(s => s.id !== id);
-            localStorage.setItem('maktabStudents', JSON.stringify(students));
+            window.maktabStudents = students;
             renderStudentsList();
         }
 
@@ -798,51 +770,38 @@
             editingId = null;
             document.getElementById('student-name').value = '';
             document.getElementById('parent-name').value = '';
-            currentMarks = {};
             loadCurrentClass();
+            document.getElementById('p-student-name').textContent = '-';
+            document.getElementById('p-parent-name').textContent = '-';
+            document.getElementById('p-class-name').textContent = '-';
+            document.getElementById('p-class-display').textContent = classData[currentClassIndex].name;
+            document.getElementById('preview-tbody').innerHTML = '';
+            document.getElementById('p-total-obtained').textContent = '0';
+            document.getElementById('p-percentage').textContent = '0.0';
+            document.getElementById('p-grade').textContent = 'F';
+            document.getElementById('p-pass-status').textContent = '(PASS)';
         }
 
         function downloadReport() {
-            const name = document.getElementById('student-name').value.trim() || 'طالبہ';
+            const name = document.getElementById('p-student-name').textContent || 'طالبہ';
             const element = document.getElementById('report-card');
             
             const opt = {
-                margin: [8, 8, 8, 8],
-                filename: `${name}_مکتب_رپورٹ.pdf`,
+                margin: [10, 10, 10, 10],
+                filename: `${name}_رپورٹ_کارڈ.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
+                html2canvas: { scale: 2, useCORS: true, letterRendering: true },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
             
             html2pdf().set(opt).from(element).save();
         }
 
-        // Initialize
         function init() {
             renderClassTabs();
             updateTheme();
             loadCurrentClass();
             renderStudentsList();
-            
-            // Live update on student name / parent change
-            const liveInputs = ['student-name', 'parent-name'];
-            liveInputs.forEach(id => {
-                document.getElementById(id).addEventListener('input', updatePreview);
-            });
-            
-            // Keyboard support for marks
-            document.addEventListener('keydown', (e) => {
-                if (e.key === "Enter") {
-                    const focused = document.activeElement;
-                    if (focused && focused.classList.contains('obtained-input')) {
-                        const next = focused.parentElement.parentElement.nextElementSibling;
-                        if (next) {
-                            const nextInput = next.querySelector('input');
-                            if (nextInput) nextInput.focus();
-                        }
-                    }
-                }
-            });
         }
         
         window.onload = init;
