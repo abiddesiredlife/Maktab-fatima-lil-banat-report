@@ -1,1 +1,320 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مکتب فاطمة للبنات - نظام رپورٹ کارڈ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    font-family: 'Noto Nastaliq Urdu', serif;
+    background:linear-gradient(135deg,#e6ecf3,#f5f7fa);
+}
+
+/* ================= ADMIN PANEL ================= */
+
+.admin-panel{
+    background:#0f172a;
+    color:white;
+    padding:15px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    justify-content:center;
+}
+
+.admin-panel input,
+.admin-panel select{
+    padding:6px;
+    border-radius:5px;
+    border:none;
+}
+
+.admin-panel button{
+    padding:6px 14px;
+    border:none;
+    background:#b68d40;
+    color:white;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+/* ================= REPORT DESIGN ================= */
+
+.report{
+    width:210mm;
+    min-height:297mm;
+    margin:20px auto;
+    padding:35px;
+    background:white;
+    position:relative;
+    border:8px solid #b68d40;
+    box-shadow:0 0 25px rgba(0,0,0,0.15);
+}
+
+/* Watermark */
+
+.watermark{
+    position:absolute;
+    top:45%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    font-size:90px;
+    opacity:0.04;
+    font-family:'Amiri', serif;
+    pointer-events:none;
+}
+
+/* Header */
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    width:120px;
+    height:auto;
+}
+
+.title{
+    text-align:center;
+    font-size:44px;
+    font-family:'Amiri', serif;
+    font-weight:bold;
+    color:#b68d40;
+}
+
+.serial{
+    font-weight:bold;
+}
+
+/* Student Info */
+
+.info{
+    margin-top:20px;
+    display:flex;
+    justify-content:space-between;
+    font-size:18px;
+}
+
+/* Table */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:25px;
+}
+
+th{
+    background:#b68d40;
+    color:white;
+    padding:10px;
+}
+
+td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+}
+
+/* Footer */
+
+.footer{
+    margin-top:25px;
+    font-size:20px;
+    font-weight:bold;
+    text-align:center;
+}
+
+/* Themes */
+
+.theme-nazira{border-color:#1e5631;}
+.theme-nazira th{background:#1e5631;}
+
+.theme-momina2{border-color:#7c2d12;}
+.theme-momina2 th{background:#7c2d12;}
+
+.theme-momina3{border-color:#0b3c5d;}
+.theme-momina3 th{background:#0b3c5d;}
+
+@media(max-width:768px){
+    .report{
+        width:95%;
+        padding:15px;
+    }
+}
+
+@media print{
+    body{background:none;}
+    .admin-panel{display:none;}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= ADMIN PANEL ================= -->
+
+<div class="admin-panel">
+    جماعت:
+    <select id="classSelect" onchange="loadSubjects()">
+        <option value="nazira">شعبہ ناظرہ قرآن</option>
+        <option value="momina2">مومنہ کورس دوم سال</option>
+        <option value="momina3">مومنہ کورس سوم سال</option>
+    </select>
+
+    نام طالبہ:
+    <input id="studentName">
+
+    تعلیمی سال:
+    <input id="year" value="2024-2025">
+
+    <button onclick="generate()">رپورٹ تیار کریں</button>
+    <button onclick="downloadPDF()">PDF ڈاؤن لوڈ</button>
+</div>
+
+<!-- ================= REPORT ================= -->
+
+<div class="report theme-nazira" id="report">
+
+<div class="watermark">مکتب فاطمة للبنات</div>
+
+<div class="header">
+    <img src="logo.png" class="logo">
+    <div class="title">مکتب فاطمة للبنات</div>
+    <div class="serial">سیریل نمبر: <span id="serial"></span></div>
+</div>
+
+<div class="info">
+    <div>نام: <span id="rName"></span></div>
+    <div>تعلیمی سال: <span id="rYear"></span></div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>مضمون</th>
+<th>کل نمبر</th>
+<th>حاصل کردہ نمبر</th>
+</tr>
+</thead>
+<tbody id="marksBody"></tbody>
+</table>
+
+<div class="footer">
+کل نمبر: <span id="totalMax"></span> |
+حاصل کردہ: <span id="totalObt"></span> |
+فیصد: <span id="percentage"></span>% |
+گریڈ: <span id="grade"></span> |
+نتیجہ: <span id="result"></span>
+</div>
+
+</div>
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+let serialCounter=1001;
+
+const subjects={
+nazira:[
+{name:"ناظرہ قرآن",max:100},
+{name:"عقائد",max:50},
+{name:"مسنون دعائیں",max:50},
+{name:"اردو",max:100}
+],
+momina2:[
+{name:"عقائد اسلام",max:90},
+{name:"مسائل شرعی",max:100},
+{name:"سیرت النبی ﷺ",max:100},
+{name:"اخلاقی تعلیم",max:100},
+{name:"عربی زبان",max:100},
+{name:"اردو تحریری",max:50}
+],
+momina3:[
+{name:"عقائد اسلام",max:90},
+{name:"مسائل شرعی",max:100},
+{name:"سیرت النبی ﷺ",max:100},
+{name:"اخلاقی تعلیم",max:100},
+{name:"عربی زبان",max:100},
+{name:"اردو تحریری",max:50}
+]
+};
+
+function loadSubjects(){
+let cls=document.getElementById("classSelect").value;
+let report=document.getElementById("report");
+
+report.className="report theme-"+cls;
+
+let body=document.getElementById("marksBody");
+body.innerHTML="";
+
+subjects[cls].forEach((sub,i)=>{
+body.innerHTML+=`
+<tr>
+<td>${sub.name}</td>
+<td>${sub.max}</td>
+<td><input type="number" id="mark${i}" max="${sub.max}" style="width:70px;"></td>
+</tr>`;
+});
+}
+
+function generate(){
+let cls=document.getElementById("classSelect").value;
+let totalMax=0;
+let totalObt=0;
+
+subjects[cls].forEach((sub,i)=>{
+totalMax+=sub.max;
+let val=parseFloat(document.getElementById("mark"+i).value)||0;
+totalObt+=val;
+});
+
+let percent=((totalObt/totalMax)*100).toFixed(2);
+
+let grade="";
+if(percent>=90) grade="A+";
+else if(percent>=75) grade="A";
+else if(percent>=60) grade="B";
+else if(percent>=35) grade="C";
+else grade="F";
+
+let result=percent>=35?"پاس":"فیل";
+
+document.getElementById("serial").innerText=serialCounter++;
+document.getElementById("rName").innerText=document.getElementById("studentName").value;
+document.getElementById("rYear").innerText=document.getElementById("year").value;
+document.getElementById("totalMax").innerText=totalMax;
+document.getElementById("totalObt").innerText=totalObt;
+document.getElementById("percentage").innerText=percent;
+document.getElementById("grade").innerText=grade;
+document.getElementById("result").innerText=result;
+}
+
+function downloadPDF(){
+const element=document.getElementById("report");
+html2pdf().set({
+margin:0,
+filename:'ReportCard.pdf',
+image:{type:'jpeg',quality:0.98},
+html2canvas:{scale:2},
+jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+}).from(element).save();
+}
+
+loadSubjects();
+
+</script>
+
+</body>
+</html>
