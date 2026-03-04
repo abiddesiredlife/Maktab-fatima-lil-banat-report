@@ -4,48 +4,57 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Maktab Fatima Report</title>
+<title>Maktab Fatima Report Card</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
 
 body{
-font-family:'Noto Nastaliq Urdu',serif;
+font-family: "Noto Nastaliq Urdu", serif;
 background:#f4f4f4;
+margin:0;
+padding:20px;
 }
+
+/* ADMIN PANEL */
 
 .admin{
 background:white;
 padding:20px;
 margin-bottom:20px;
+border-radius:6px;
 }
 
+input,select{
+padding:6px;
+margin:5px;
+}
+
+/* REPORT PAGE */
+
 .report{
-width:210mm;
-min-height:297mm;
+width:794px;
+height:1123px;
 background:white;
 margin:auto;
 padding:40px;
-border:8px solid #b58a2c;
+box-sizing:border-box;
+border:6px solid #b58a2c;
 position:relative;
+overflow:hidden;
 }
+
+/* LOGO */
 
 .logo{
 position:absolute;
-left:30px;
-top:30px;
-width:110px;
+left:40px;
+top:40px;
+width:120px;
 }
 
-.watermark{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%) rotate(-30deg);
-font-size:120px;
-opacity:0.05;
-}
+/* TITLE */
 
 .title{
 text-align:center;
@@ -59,14 +68,31 @@ text-align:center;
 margin-bottom:20px;
 }
 
+/* WATERMARK */
+
+.watermark{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) rotate(-30deg);
+font-size:110px;
+opacity:0.05;
+pointer-events:none;
+}
+
+/* THEMES */
+
 .green{color:#1c5e2e}
 .gold{color:#b58a2c}
 .blue{color:#203a8f}
+
+/* TABLE */
 
 table{
 width:100%;
 border-collapse:collapse;
 margin-top:20px;
+page-break-inside:avoid;
 }
 
 th,td{
@@ -80,6 +106,12 @@ background:#1c5e2e;
 color:white;
 }
 
+.report *{
+page-break-inside:avoid;
+}
+
+/* FOOTER */
+
 .footer{
 margin-top:40px;
 display:flex;
@@ -92,9 +124,11 @@ justify-content:space-between;
 
 <body>
 
+<!-- ADMIN PANEL -->
+
 <div class="admin">
 
-طالبہ نام
+نام طالبہ
 <input id="name">
 
 کلاس
@@ -111,11 +145,12 @@ justify-content:space-between;
 <br>
 
 <button onclick="generate()">رپورٹ بنائیں</button>
-
-<button onclick="pdf()">PDF ڈاؤنلوڈ</button>
+<button onclick="downloadPDF()">PDF ڈاؤنلوڈ</button>
 
 </div>
 
+
+<!-- REPORT CARD -->
 
 <div id="report" class="report">
 
@@ -137,7 +172,8 @@ justify-content:space-between;
 
 <div>
 
-نام طالبہ: <span id="rname"></span>
+نام طالبہ :
+<span id="rname"></span>
 
 </div>
 
@@ -146,30 +182,32 @@ justify-content:space-between;
 <table id="reportTable">
 
 <tr>
-
 <th>مضمون</th>
 <th>کل نمبر</th>
-<th>حاصل کردہ</th>
-
+<th>حاصل کردہ نمبر</th>
 </tr>
 
 </table>
 
 <br>
 
-کل نمبر: <span id="total"></span>
+کل نمبر :
+<span id="total"></span>
 
 <br>
 
-فیصد: <span id="percent"></span>
+فیصد :
+<span id="percent"></span>
 
 <br>
 
-گریڈ: <span id="grade"></span>
+گریڈ :
+<span id="grade"></span>
 
 <br>
 
-نتیجہ: <span id="result"></span>
+نتیجہ :
+<span id="result"></span>
 
 <div class="footer">
 
@@ -183,6 +221,8 @@ justify-content:space-between;
 
 
 <script>
+
+/* SUBJECT STRUCTURE */
 
 let subjects={
 
@@ -203,7 +243,7 @@ momina2:[
 ["اردو تقریری",50],
 ["عقائد اسلام",90],
 ["مسائل شرعی",100],
-["سیرت النبی",100],
+["سیرت النبی ﷺ",100],
 ["اخلاقی تعلیم",100],
 ["عربی زبان",100],
 ["اردو تحریری",50]
@@ -220,7 +260,7 @@ momina3:[
 ["اردو تقریری",50],
 ["عقائد اسلام",90],
 ["مسائل شرعی",100],
-["سیرت النبی",100],
+["سیرت النبی ﷺ",100],
 ["اخلاقی تعلیم",100],
 ["عربی زبان",100],
 ["اردو تحریری",50]
@@ -228,6 +268,9 @@ momina3:[
 ]
 
 }
+
+
+/* CHANGE SUBJECT INPUTS */
 
 function changeSubjects(){
 
@@ -239,13 +282,16 @@ div.innerHTML=""
 subjects[cls].forEach((s,i)=>{
 
 div.innerHTML+=s[0]+
-` <input id="m${i}"> <br>`
+` <input id="m${i}" type="number"> <br>`
 
 })
 
 }
 
 changeSubjects()
+
+
+/* GENERATE REPORT */
 
 function generate(){
 
@@ -256,11 +302,13 @@ document.getElementById("rname").innerText=name
 
 let table=document.getElementById("reportTable")
 
-table.innerHTML=`<tr>
+table.innerHTML=`
+<tr>
 <th>مضمون</th>
 <th>کل نمبر</th>
-<th>حاصل کردہ</th>
-</tr>`
+<th>حاصل کردہ نمبر</th>
+</tr>
+`
 
 let total=0
 let max=0
@@ -306,18 +354,22 @@ if(cls=="momina3")title.classList.add("blue")
 
 }
 
-function pdf(){
+
+/* PDF EXPORT */
+
+function downloadPDF(){
 
 let element=document.getElementById("report")
 
-html2pdf().set({
-
+let opt={
 margin:0,
 filename:'report-card.pdf',
-html2canvas:{scale:2},
-jsPDF:{unit:'mm',format:'a4'}
+image:{type:'jpeg',quality:1},
+html2canvas:{scale:3,useCORS:true},
+jsPDF:{unit:'px',format:[794,1123],orientation:'portrait'}
+}
 
-}).from(element).save()
+html2pdf().set(opt).from(element).save()
 
 }
 
