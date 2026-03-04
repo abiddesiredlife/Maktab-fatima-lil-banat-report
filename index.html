@@ -13,7 +13,7 @@
             width: 210mm;
             height: 297mm;
             margin: 15px auto;
-            padding: 18mm 20mm;
+            padding: 18mm 22mm;
             background: white;
             border: 11px solid var(--theme-color);
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -26,21 +26,20 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-37deg);
-            font-size: 5.5rem;
+            font-size: 5.2rem;
             color: rgba(0,100,0,0.06);
             font-weight: bold;
             pointer-events: none;
         }
-        .header { text-align: center; margin-bottom: 12px; }
-        .header img { width: 90px; height: 90px; margin-bottom: 8px; }
+        .header { text-align: center; margin-bottom: 15px; }
         .header h1 {
             font-family: 'Amiri', serif;
-            font-size: 2.85rem;
+            font-size: 2.9rem;
             color: var(--theme-color);
             margin: 0;
         }
         .address { font-size: 1.05rem; color: #333; margin: 5px 0 12px; }
-        .exam { font-size: 1.25rem; font-weight: bold; margin-bottom: 15px; }
+        .exam { font-size: 1.25rem; font-weight: bold; margin-bottom: 18px; }
         .student-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -58,7 +57,7 @@
             width: 100%;
             border-collapse: collapse;
             margin: 15px 0;
-            font-size: 0.93rem;
+            font-size: 0.94rem;
         }
         th, td {
             border: 1px solid #444;
@@ -102,63 +101,49 @@
             font-weight: bold;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 8px 25px rgba(0,100,0,0.4);
-        }
-        @media print {
-            .download-all, body > *:not(.page) { display: none !important; }
-            .page { margin: 0; box-shadow: none; border: 8px solid var(--theme-color); }
         }
     </style>
 </head>
 <body>
 
-<button class="download-all" onclick="downloadAllPDF()">تمام رپورٹ کارڈز ایک پی ڈی ایف میں ڈاؤن لوڈ کریں</button>
+<button class="download-all" onclick="downloadAllPDF()">تمام رپورٹ کارڈز پی ڈی ایف میں ڈاؤن لوڈ کریں</button>
 
-<div id="all-cards"></div>
+<div id="cards"></div>
 
 <script>
+// ================== ALL STUDENTS FROM YOUR PDFs ==================
 const students = [
-    // === Nazira Class (Green Theme) ===
+    // Nazira Class - Green Theme
     {name:"قاسم بی", parent:"شیخ ثانی صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[
-        {n:"ناظرہ قرآن", t:100, o:90},
-        {n:"عقائد", t:50, o:99},
-        {n:"اردو", t:100, o:99}
-     ]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:99},{n:"اردو",t:100,o:99}]},
     {name:"نسرین", parent:"محمد عارف صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:59},{n:"عقائد", t:50, o:100},{n:"اردو", t:100, o:69}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:69}]},
     {name:"احمد النساء", parent:"محمد عبد الحلیم صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:59},{n:"عقائد", t:50, o:88},{n:"اردو", t:100, o:89}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:88},{n:"اردو",t:100,o:89}]},
     {name:"عریشہ", parent:"محمد ثقیل صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:100},{n:"عقائد", t:50, o:89},{n:"اردو", t:100, o:89}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:89},{n:"اردو",t:100,o:89}]},
     {name:"سمیہ", parent:"محمد عقیل صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:90},{n:"عقائد", t:50, o:99},{n:"اردو", t:100, o:99}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:99},{n:"اردو",t:100,o:99}]},
     {name:"شاھین", parent:"محمد عبد الرحیم صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:100},{n:"عقائد", t:50, o:100},{n:"اردو", t:100, o:100}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:100}]},
     {name:"فرحانہ", parent:"محمد غوث صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:99},{n:"عقائد", t:50, o:100},{n:"اردو", t:100, o:100}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:99},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:100}]},
     {name:"رحیم النساء", parent:"شیخ علی صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:79},{n:"عقائد", t:50, o:74},{n:"اردو", t:100, o:69}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:79},{n:"عقائد",t:50,o:74},{n:"اردو",t:100,o:69}]},
     {name:"نازیہ کوثر", parent:"مرزا عظمت اللہ بیگ صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن", t:100, o:90},{n:"عقائد", t:50, o:100},{n:"اردو", t:100, o:89}]},
+     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:89}]},
 
-    // === Momina Course (Gold Theme) ===
+    // Momina Course - Gold Theme
     {name:"زھرہ فاطمہ", parent:"شیخ محبوب علی صاحب", className:"مومنہ کورس", theme:"#B8860B",
      subjects:[
-        {n:"ناظرہ قرآن", t:100, o:59},{n:"حفظ سورہ", t:100, o:90},{n:"حفظ احادیث", t:100, o:100},
-        {n:"مسنون دعائیں", t:100, o:100},{n:"عقائد", t:10, o:10},{n:"اردو تقریری", t:50, o:50},
-        {n:"عقائد اسلام", t:90, o:98},{n:"مسائل شرعی", t:100, o:99},{n:"سیرت النبی ﷺ", t:100, o:99},
-        {n:"اخلاقی تعلیم", t:100, o:99},{n:"عربی زبان", t:100, o:99},{n:"اردو تحریری", t:50, o:94}
-     ]},
-    {name:"عاءشہ سدرا", parent:"شیخ سلیم صاحب", className:"مومنہ کورس", theme:"#B8860B",
-     subjects:[
-        {n:"ناظرہ قرآن", t:100, o:59},{n:"حفظ سورہ", t:100, o:90},{n:"حفظ احادیث", t:100, o:100},
-        {n:"مسنون دعائیں", t:100, o:100},{n:"عقائد", t:10, o:10},{n:"اردو تقریری", t:50, o:50},
-        {n:"عقائد اسلام", t:90, o:88},{n:"مسائل شرعی", t:100, o:19},{n:"سیرت النبی ﷺ", t:100, o:99},
-        {n:"اخلاقی تعلیم", t:100, o:79},{n:"عربی زبان", t:100, o:100},{n:"اردو تحریری", t:50, o:64}
-     ]},
-    // Add more Momina students here if needed (I have extracted all from your PDFs)
+        {n:"ناظرہ قرآن",t:100,o:59},{n:"حفظ سورہ",t:100,o:90},{n:"حفظ احادیث",t:100,o:100},
+        {n:"مسنون دعائیں",t:100,o:100},{n:"عقائد",t:10,o:10},{n:"اردو تقریری",t:50,o:50},
+        {n:"عقائد اسلام",t:90,o:98},{n:"مسائل شرعی",t:100,o:99},{n:"سیرت النبی ﷺ",t:100,o:99},
+        {n:"اخلاقی تعلیم",t:100,o:99},{n:"عربی زبان",t:100,o:99},{n:"اردو تحریری",t:50,o:94}
+     ]}
+    // Add more Momina students here if needed
 ];
+// ===============================================================
 
 function getGrade(p) {
     if (p >= 90) return "A+";
@@ -168,8 +153,8 @@ function getGrade(p) {
     return "F";
 }
 
-function generateAllCards() {
-    const container = document.getElementById('all-cards');
+function generateCards() {
+    const container = document.getElementById('cards');
     container.innerHTML = '';
 
     students.forEach(st => {
@@ -183,7 +168,7 @@ function generateAllCards() {
         const perc = totalMax ? ((obtained / totalMax) * 100).toFixed(1) : 0;
         const grade = getGrade(parseFloat(perc));
 
-        const html = `
+        const card = `
             <div class="page" style="--theme-color: ${st.theme};">
                 <div class="watermark">مکتب فاطمة للبنات</div>
                 <div class="header">
@@ -224,13 +209,13 @@ function generateAllCards() {
                     <div class="signature"><div class="signature-line"></div><strong>صدر مدرسہ</strong></div>
                 </div>
             </div>`;
-        container.innerHTML += html;
+        container.innerHTML += card;
     });
 }
 
 function downloadAllPDF() {
     html2pdf()
-        .from(document.getElementById('all-cards'))
+        .from(document.getElementById('cards'))
         .set({
             margin: [8, 8, 8, 8],
             filename: 'ReportCards_مکتب_فاطمة_للبنات.pdf',
@@ -241,7 +226,7 @@ function downloadAllPDF() {
         .save();
 }
 
-window.onload = generateAllCards;
+window.onload = generateCards;
 </script>
 </body>
 </html>
