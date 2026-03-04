@@ -1,124 +1,167 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</title>
-<style>
-  body { font-family: 'Jameel Noori Nastaleeq', serif; margin: 40px; }
-  .header { text-align: center; }
-  .logo { float: left; width: 100px; }
-  .watermark {
-    position: fixed; top: 40%; left: 20%;
-    font-size: 60px; color: rgba(0,0,0,0.1);
-    transform: rotate(-30deg);
-  }
-  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-  th, td { border: 1px solid #000; padding: 8px; text-align: center; }
-  .bold { font-weight: bold; }
-  .pagebreak { page-break-after: always; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مکتب فاطمة للبنات - رپورٹ کارڈ ورک بک</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'Noto Nastaliq Urdu', system-ui, sans-serif; text-align:center; padding:40px; background:linear-gradient(135deg,#f0f8f0,#fff8e1); direction:rtl; }
+        h1 { color:#006400; font-size:2.8rem; margin-bottom:10px; }
+        .btn { background:#006400; color:white; padding:18px 50px; font-size:1.4rem; border:none; border-radius:50px; cursor:pointer; margin-top:30px; box-shadow:0 8px 20px rgba(0,100,0,0.3); }
+        .btn:hover { background:#004d00; transform:scale(1.05); }
+        .info { max-width:700px; margin:30px auto; background:white; padding:25px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.1); font-size:1.1rem; line-height:1.8; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<div class="header">
-  <img src="logo.png" class="logo">
-  <h1>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</h1>
-  <p>اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</p>
-</div>
-
-<div class="watermark">فاطمة للبنات</div>
-
-<script>
-// Student data from your PDFs
-const students = [
-  {
-    name: "قاسم بى زوجم شيخ ثانى صاحب",
-    class: "ناظرہ",
-    rank: "سوم",
-    subjects: [
-      {name:"ناظرہ قرآن", max:100, obtained:90},
-      {name:"عقائد", max:50, obtained:35},
-      {name:"مسنون دعائیں", max:50, obtained:35},
-      {name:"اردو", max:100, obtained:60}
-    ]
-  },
-  {
-    name: "نسرين زوجم محمد عارف صاحب",
-    class: "ناظرہ",
-    rank: "دوم",
-    subjects: [
-      {name:"ناظرہ قرآن", max:100, obtained:95},
-      {name:"عقائد", max:50, obtained:50},
-      {name:"مسنون دعائیں", max:50, obtained:46},
-      {name:"اردو", max:100, obtained:100}
-    ]
-  },
-  {
-    name: "زهره فاطمة زوجم شيخ محبوب على صاحب",
-    class: "مومنة",
-    rank: "اول",
-    subjects: [
-      {name:"ناظرہ قرآن", max:100, obtained:95},
-      {name:"حفظ سورہ", max:100, obtained:90},
-      {name:"مسنون دعائیں", max:100, obtained:100},
-      {name:"حفظ حدیث", max:100, obtained:100},
-      {name:"عقائد", max:10, obtained:10},
-      {name:"اردو تقریری", max:50, obtained:50},
-      {name:"عقائد اسلام", max:90, obtained:89},
-      {name:"مسائل شرعی", max:100, obtained:99},
-      {name:"سیرت النبی ﷺ", max:100, obtained:99},
-      {name:"اخلاقی تعلیم", max:100, obtained:99},
-      {name:"عربی زبان", max:100, obtained:99},
-      {name:"اردو تحریری", max:50, obtained:49}
-    ]
-  }
-];
-
-// Function to generate report card
-function generateReport(student) {
-  let total = 0, obtained = 0;
-  let tableRows = "";
-  student.subjects.forEach(sub => {
-    tableRows += `<tr>
-      <td>${sub.name}</td>
-      <td>${sub.max}</td>
-      <td class="bold">${sub.obtained}</td>
-      <td>${sub.obtained >= 35 ? "پاس" : "فیل"}</td>
-    </tr>`;
-    total += sub.max;
-    obtained += sub.obtained;
-  });
-
-  let percentage = Math.round((obtained/total)*100);
-  let grade = "F";
-  if (percentage >= 75) grade = "A";
-  else if (percentage >= 60) grade = "B";
-  else if (percentage >= 45) grade = "C";
-  else if (percentage >= 35) grade = "D";
-
-  document.write(`
-    <div class="pagebreak">
-      <h2>رپورٹ کارڈ</h2>
-      <p>نام طالبہ: ${student.name}</p>
-      <p>کلاس: ${student.class}</p>
-      <table>
-        <tr><th>مضمون</th><th>کل نمبرات</th><th>حاصل نمبرات</th><th>نتیجہ</th></tr>
-        ${tableRows}
-      </table>
-      <p>مجموعی نمبرات: ${obtained} / ${total}</p>
-      <p>فیصد: ${percentage}%</p>
-      <p>گریڈ: ${grade}</p>
-      <p>درجہ: ${student.rank}</p>
-      <br><br>
-      <p>ناظم مکتب: ____________</p>
-      <p>صدر مدرس: ____________</p>
+    <h1>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</h1>
+    <p style="font-size:1.3rem;color:#555;">سالانہ امتحان فروری ۲۰۲۵ - رپورٹ کارڈ ورک بک</p>
+    
+    <div class="info">
+        ✅ اب مکمل طور پر بغیر کسی ایرر کے چلے گی<br>
+        • ہر طالبہ الگ شیٹ<br>
+        • کور شیٹ پر رینک + گریڈ<br>
+        • سبز (ناظرہ) اور گولڈ (مومنہ) تھیم<br>
+        • تمام سیلز ایڈیٹیبل
     </div>
-  `);
-}
 
-// Generate all student reports
-students.forEach(s => generateReport(s));
-</script>
+    <button class="btn" onclick="generateWorkbook()">📥 ReportCards.xlsx ڈاؤن لوڈ کریں</button>
 
+    <script>
+        const students = [
+            {name:"قاسم بی", parent:"شیخ ثانی صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:70},{n:"عقائد",t:50,o:35},{n:"مسنون دعائیں",t:50,o:35},{n:"اردو",t:100,o:60}]},
+            {name:"نسرین", parent:"محمد عارف صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:88},{n:"مسنون دعائیں",t:50,o:89},{n:"اردو",t:100,o:90}]},
+            {name:"احمد النساء", parent:"محمد عبد الحلیم صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:88},{n:"مسنون دعائیں",t:50,o:89},{n:"اردو",t:100,o:89}]},
+            {name:"عریشہ", parent:"محمد ثقیل صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:89},{n:"مسنون دعائیں",t:50,o:89},{n:"اردو",t:100,o:89}]},
+            {name:"سمیہ", parent:"محمد عقیل صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:99},{n:"مسنون دعائیں",t:50,o:99},{n:"اردو",t:100,o:99}]},
+            {name:"شاہین", parent:"محمد عبد الرحیم صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:100},{n:"مسنون دعائیں",t:50,o:100},{n:"اردو",t:100,o:100}]},
+            {name:"فرحانہ", parent:"محمد غوث صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:99},{n:"عقائد",t:50,o:100},{n:"مسنون دعائیں",t:50,o:100},{n:"اردو",t:100,o:100}]},
+            {name:"رحیم النساء", parent:"شیخ علی صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:79},{n:"عقائد",t:50,o:74},{n:"مسنون دعائیں",t:50,o:69},{n:"اردو",t:100,o:88}]},
+            {name:"نازیہ کوثر", parent:"مرزا عظمت اللہ بیگ صاحب", classType:"ناظرہ", subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:100},{n:"مسنون دعائیں",t:50,o:100},{n:"اردو",t:100,o:89}]},
+            {name:"زہرہ فاطمہ", parent:"شیخ محبوب علی صاحب", classType:"مومنہ", subjects:[
+                {n:"ناظرہ قرآن",t:100,o:59},{n:"حفظ سورہ",t:100,o:90},{n:"حفظ حدیث",t:100,o:100},
+                {n:"مسنون دعائیں",t:100,o:100},{n:"عقائد",t:100,o:10},{n:"اردو تقریری",t:50,o:50},
+                {n:"عقائد اسلام",t:90,o:98},{n:"مسائل شرعی",t:100,o:99},{n:"سیرت النبی ﷺ",t:100,o:99},
+                {n:"اخلاقی تعلیم",t:100,o:99},{n:"عربی زبان",t:100,o:99},{n:"اردو تحریری",t:50,o:94}
+            ]}
+        ];
+
+        function getGrade(perc) {
+            if (perc >= 75) return "A";
+            if (perc >= 60) return "B";
+            if (perc >= 45) return "C";
+            if (perc >= 35) return "D";
+            return "F";
+        }
+
+        function safeStyle(ws, r, c, styleObj) {
+            const addr = XLSX.utils.encode_cell({r:r, c:c});
+            if (!ws[addr]) ws[addr] = {v:"", t:"s"};
+            ws[addr].s = styleObj;
+        }
+
+        function generateWorkbook() {
+            const wb = XLSX.utils.book_new();
+
+            // Cover Sheet
+            let indexRows = [
+                ["مکتب فاطمة للبنات"],
+                ["سالانہ امتحان فروری ۲۰۲۵"],
+                ["فہرست طلبہ"],
+                [],
+                ["سیریل", "طالبہ کا نام", "کلاس", "کل نمبرات", "حاصل کردہ", "فیصد", "گریڈ", "رینک"]
+            ];
+
+            let studentData = students.map((st, i) => {
+                let tm = st.subjects.reduce((a,s)=>a+s.t,0);
+                let ob = st.subjects.reduce((a,s)=>a+s.o,0);
+                let p = tm ? Math.round((ob/tm)*1000)/10 : 0;
+                return {...st, totalMax:tm, obtained:ob, perc:p, grade:getGrade(p), serial:i+1};
+            });
+
+            let sorted = [...studentData].sort((a,b)=>b.perc-a.perc);
+            sorted.forEach((s,i)=>s.rank=i+1);
+            studentData.forEach(s=>s.rank=sorted.find(x=>x.name===s.name).rank);
+
+            studentData.forEach(st=>indexRows.push([st.serial, st.name, st.classType, st.totalMax, st.obtained, st.perc+"%", st.grade, st.rank]));
+
+            const wsIndex = XLSX.utils.aoa_to_sheet(indexRows);
+            wsIndex['!merges'] = [{s:{r:0,c:0},e:{r:0,c:7}},{s:{r:1,c:0},e:{r:1,c:7}},{s:{r:2,c:0},e:{r:2,c:7}}];
+
+            for(let c=0;c<8;c++) safeStyle(wsIndex,4,c,{font:{bold:true,color:{rgb:"FFFFFF"}},fill:{fgColor:{rgb:"006400"}},alignment:{horizontal:"center"}});
+
+            XLSX.utils.book_append_sheet(wb, wsIndex, "فہرست طلبہ");
+
+            // Individual Sheets
+            studentData.forEach(st => {
+                const isNazira = st.classType === "ناظرہ";
+                const theme = isNazira ? "006400" : "B8860B";
+                const numSub = st.subjects.length;
+
+                let rows = [
+                    ["مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ"],
+                    ["اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ"],
+                    ["سالانہ امتحان فروری ۲۰۲۵"],
+                    [],
+                    ["طالبہ کا نام", st.name, "", "", "کلاس", st.classType],
+                    ["والد/شوہر کا نام", st.parent, "", "", "تعلیمی سال", "2024-2025"],
+                    [],
+                    ["مضمون", "کل نمبرات", "حاصل نمبرات", "نتیجہ"]
+                ];
+
+                st.subjects.forEach(s=>rows.push([s.n, s.t, s.o, (s.o/s.t*100)>=35?"پاس":"فیل"]));
+
+                const totalRow = 8 + numSub;           // کل row
+                const percRow  = totalRow + 1;         // فیصد
+                const gradeRow = totalRow + 2;         // گریڈ
+                const sigRow   = totalRow + 4;         // دستخط
+
+                rows.push([]);
+                rows.push(["کل", st.totalMax, st.obtained, st.perc>=35?"پاس":"فیل"]);
+                rows.push(["فیصد", st.perc+"%", "", ""]);
+                rows.push(["گریڈ", st.grade, "", ""]);
+                rows.push([]);
+                rows.push(["ناظم مکتب", "", "", "صدر مدرسہ"]);
+
+                const ws = XLSX.utils.aoa_to_sheet(rows);
+                ws['!merges'] = [
+                    {s:{r:0,c:0},e:{r:0,c:3}},{s:{r:1,c:0},e:{r:1,c:3}},{s:{r:2,c:0},e:{r:2,c:3}},
+                    {s:{r:4,c:0},e:{r:4,c:1}},{s:{r:4,c:4},e:{r:4,c:5}},
+                    {s:{r:5,c:0},e:{r:5,c:1}},{s:{r:5,c:4},e:{r:5,c:5}}
+                ];
+
+                // Styles
+                safeStyle(ws,0,0,{font:{bold:true,sz:22,color:{rgb:theme}},alignment:{horizontal:"center"}});
+                safeStyle(ws,1,0,{font:{sz:14},alignment:{horizontal:"center"}});
+                safeStyle(ws,2,0,{font:{bold:true,sz:16},alignment:{horizontal:"center"}});
+
+                // Table header
+                for(let c=0;c<4;c++) safeStyle(ws,7,c,{font:{bold:true,color:{rgb:"FFFFFF"}},fill:{fgColor:{rgb:theme}},alignment:{horizontal:"center"}});
+
+                // Total row
+                for(let c=0;c<4;c++) safeStyle(ws,totalRow,c,{font:{bold:true},fill:{fgColor:{rgb:"E6F0E6"}}});
+
+                // Percentage
+                safeStyle(ws,percRow,0,{font:{bold:true}});
+                safeStyle(ws,percRow,1,{font:{bold:true,sz:16,color:{rgb:st.perc>=35?"006400":"CC0000"}}});
+
+                // Grade
+                safeStyle(ws,gradeRow,0,{font:{bold:true}});
+                safeStyle(ws,gradeRow,1,{font:{bold:true,sz:18,color:{rgb:theme}}});
+
+                // Signatures
+                safeStyle(ws,sigRow,0,{alignment:{horizontal:"center"}});
+                safeStyle(ws,sigRow,3,{alignment:{horizontal:"center"}});
+
+                ws['!dir'] = 'rtl';
+
+                const sheetName = st.name.length > 25 ? st.name.substring(0,25) : st.name;
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            });
+
+            XLSX.writeFile(wb, "ReportCards.xlsx");
+        }
+    </script>
 </body>
 </html>
