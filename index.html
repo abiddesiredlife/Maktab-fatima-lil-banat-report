@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مکتب فاطمة للبنات - تمام رپورٹ کارڈز</title>
+    <title>مکتب فاطمة للبنات - رپورٹ کارڈز</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -19,14 +19,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             position: relative;
             page-break-after: always;
-            overflow: hidden;
         }
         .watermark {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%) rotate(-37deg);
-            font-size: 5.2rem;
+            font-size: 5.5rem;
             color: rgba(0,100,0,0.06);
             font-weight: bold;
             pointer-events: none;
@@ -106,12 +105,11 @@
 </head>
 <body>
 
-<button class="download-all" onclick="downloadAllPDF()">تمام رپورٹ کارڈز پی ڈی ایف میں ڈاؤن لوڈ کریں</button>
+<button class="download-all" onclick="downloadAllPDF()">تمام رپورٹ کارڈز ایک پی ڈی ایف میں ڈاؤن لوڈ کریں</button>
 
 <div id="cards"></div>
 
 <script>
-// ================== ALL STUDENTS FROM YOUR PDFs ==================
 const students = [
     // Nazira Class - Green Theme
     {name:"قاسم بی", parent:"شیخ ثانی صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
@@ -133,7 +131,7 @@ const students = [
     {name:"نازیہ کوثر", parent:"مرزا عظمت اللہ بیگ صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
      subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:89}]},
 
-    // Momina Course - Gold Theme
+    // Momina Course - Gold Theme (from your second PDF)
     {name:"زھرہ فاطمہ", parent:"شیخ محبوب علی صاحب", className:"مومنہ کورس", theme:"#B8860B",
      subjects:[
         {n:"ناظرہ قرآن",t:100,o:59},{n:"حفظ سورہ",t:100,o:90},{n:"حفظ احادیث",t:100,o:100},
@@ -141,9 +139,7 @@ const students = [
         {n:"عقائد اسلام",t:90,o:98},{n:"مسائل شرعی",t:100,o:99},{n:"سیرت النبی ﷺ",t:100,o:99},
         {n:"اخلاقی تعلیم",t:100,o:99},{n:"عربی زبان",t:100,o:99},{n:"اردو تحریری",t:50,o:94}
      ]}
-    // Add more Momina students here if needed
 ];
-// ===============================================================
 
 function getGrade(p) {
     if (p >= 90) return "A+";
@@ -168,7 +164,7 @@ function generateCards() {
         const perc = totalMax ? ((obtained / totalMax) * 100).toFixed(1) : 0;
         const grade = getGrade(parseFloat(perc));
 
-        const card = `
+        const html = `
             <div class="page" style="--theme-color: ${st.theme};">
                 <div class="watermark">مکتب فاطمة للبنات</div>
                 <div class="header">
@@ -209,7 +205,7 @@ function generateCards() {
                     <div class="signature"><div class="signature-line"></div><strong>صدر مدرسہ</strong></div>
                 </div>
             </div>`;
-        container.innerHTML += card;
+        container.innerHTML += html;
     });
 }
 
