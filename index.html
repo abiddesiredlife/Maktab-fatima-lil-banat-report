@@ -4,7 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Maktab Fatima Report System</title>
+<title>Maktab Fatima Report</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -12,36 +12,61 @@
 
 body{
 font-family:'Noto Nastaliq Urdu',serif;
-background:#f5f5f5;
-padding:20px;
-}
-
-h2{
-text-align:center;
+background:#f4f4f4;
 }
 
 .admin{
 background:white;
 padding:20px;
-margin-bottom:30px;
-border-radius:8px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+margin-bottom:20px;
 }
 
-input,select{
-padding:6px;
-margin:4px;
+.report{
+width:210mm;
+min-height:297mm;
+background:white;
+margin:auto;
+padding:40px;
+border:8px solid #b58a2c;
+position:relative;
 }
 
-button{
-padding:10px 20px;
-margin:10px;
-cursor:pointer;
+.logo{
+position:absolute;
+left:30px;
+top:30px;
+width:110px;
 }
+
+.watermark{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) rotate(-30deg);
+font-size:120px;
+opacity:0.05;
+}
+
+.title{
+text-align:center;
+font-size:38px;
+font-weight:bold;
+margin-top:10px;
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:20px;
+}
+
+.green{color:#1c5e2e}
+.gold{color:#b58a2c}
+.blue{color:#203a8f}
 
 table{
-border-collapse:collapse;
 width:100%;
+border-collapse:collapse;
+margin-top:20px;
 }
 
 th,td{
@@ -50,46 +75,9 @@ padding:8px;
 text-align:center;
 }
 
-.report{
-width:210mm;
-min-height:297mm;
-background:white;
-padding:40px;
-margin:auto;
-position:relative;
-}
-
-.logo{
-position:absolute;
-left:40px;
-top:40px;
-width:80px;
-}
-
-.title{
-text-align:center;
-font-size:42px;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.gold{color:#b58a2c}
-.green{color:#146c43}
-.blue{color:#1f3c88}
-
-.watermark{
-position:absolute;
-top:45%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:90px;
-opacity:0.05;
-}
-
-.info{
-display:flex;
-justify-content:space-between;
-margin-top:30px;
+th{
+background:#1c5e2e;
+color:white;
 }
 
 .footer{
@@ -104,100 +92,65 @@ justify-content:space-between;
 
 <body>
 
-<h2>Admin Panel - Student Marks Entry</h2>
-
 <div class="admin">
 
-<select id="studentSelect"></select>
+طالبہ نام
+<input id="name">
 
-<input placeholder="نام طالبہ" id="name">
+کلاس
+<select id="class" onchange="changeSubjects()">
 
-<select id="class">
 <option value="nazira">شعبہ ناظرہ قرآن</option>
 <option value="momina2">مومنہ کورس دوم</option>
 <option value="momina3">مومنہ کورس سوم</option>
+
 </select>
 
-<br>
-
-ناظرہ قرآن
-<input id="s1">
-
-عقائد
-<input id="s2">
-
-مسنون دعائیں
-<input id="s3">
-
-اردو
-<input id="s4">
+<div id="marks"></div>
 
 <br>
 
-<button onclick="saveStudent()">Save Student</button>
-<button onclick="generate()">Generate Report</button>
-<button onclick="downloadPDF()">Download PDF</button>
+<button onclick="generate()">رپورٹ بنائیں</button>
+
+<button onclick="pdf()">PDF ڈاؤنلوڈ</button>
 
 </div>
 
+
 <div id="report" class="report">
 
-<div class="watermark">فاطمہ</div>
+<div class="watermark">مکتب فاطمہ</div>
 
 <img src="logo.png" class="logo">
 
 <div id="title" class="title gold">
+
 مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ
+
 </div>
 
-<div style="text-align:center">
+<div class="subtitle">
+
 اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ
-</div>
 
-<div class="info">
-
-<div>
-نام طالبہ:
-<span id="rname"></span>
 </div>
 
 <div>
-کلاس:
-<span id="rclass"></span>
-</div>
+
+نام طالبہ: <span id="rname"></span>
 
 </div>
 
-<table>
+<br>
+
+<table id="reportTable">
 
 <tr>
+
 <th>مضمون</th>
 <th>کل نمبر</th>
 <th>حاصل کردہ</th>
-</tr>
 
-<tr>
-<td>ناظرہ قرآن</td>
-<td>100</td>
-<td id="rs1"></td>
-</tr>
-
-<tr>
-<td>عقائد</td>
-<td>50</td>
-<td id="rs2"></td>
-</tr>
-
-<tr>
-<td>مسنون دعائیں</td>
-<td>50</td>
-<td id="rs3"></td>
-</tr>
-
-<tr>
-<td>اردو</td>
-<td>100</td>
-<td id="rs4"></td>
 </tr>
 
 </table>
@@ -205,95 +158,131 @@ justify-content:space-between;
 <br>
 
 کل نمبر: <span id="total"></span>
+
 <br>
+
 فیصد: <span id="percent"></span>
+
 <br>
+
 گریڈ: <span id="grade"></span>
+
 <br>
-رینک: <span id="rank"></span>
+
+نتیجہ: <span id="result"></span>
 
 <div class="footer">
 
-<div>دستخط معلم</div>
-<div>دستخط ممتحن</div>
+<div>ناظمہ مکتب</div>
+
+<div>صدر مدرس</div>
 
 </div>
 
 </div>
+
 
 <script>
 
-let students=[]
+let subjects={
 
-function updateDropdown(){
+nazira:[
+["ناظرہ قرآن",100],
+["عقائد",50],
+["مسنون دعائیں",50],
+["اردو",100]
+],
 
-let select=document.getElementById("studentSelect")
-select.innerHTML=""
+momina2:[
 
-students.forEach((s,i)=>{
-let option=document.createElement("option")
-option.value=i
-option.text="Student "+(i+1)
-select.appendChild(option)
+["ناظرہ قرآن",100],
+["حفظ سورہ",100],
+["حفظ حدیث",100],
+["دعائیں",100],
+["عقائد",10],
+["اردو تقریری",50],
+["عقائد اسلام",90],
+["مسائل شرعی",100],
+["سیرت النبی",100],
+["اخلاقی تعلیم",100],
+["عربی زبان",100],
+["اردو تحریری",50]
+
+],
+
+momina3:[
+
+["ناظرہ قرآن",100],
+["حفظ سورہ",100],
+["حفظ حدیث",100],
+["دعائیں",100],
+["عقائد",10],
+["اردو تقریری",50],
+["عقائد اسلام",90],
+["مسائل شرعی",100],
+["سیرت النبی",100],
+["اخلاقی تعلیم",100],
+["عربی زبان",100],
+["اردو تحریری",50]
+
+]
+
+}
+
+function changeSubjects(){
+
+let cls=document.getElementById("class").value
+let div=document.getElementById("marks")
+
+div.innerHTML=""
+
+subjects[cls].forEach((s,i)=>{
+
+div.innerHTML+=s[0]+
+` <input id="m${i}"> <br>`
+
 })
 
 }
 
-function saveStudent(){
-
-let student={
-name:document.getElementById("name").value,
-class:document.getElementById("class").value,
-s1:Number(document.getElementById("s1").value),
-s2:Number(document.getElementById("s2").value),
-s3:Number(document.getElementById("s3").value),
-s4:Number(document.getElementById("s4").value)
-}
-
-students.push(student)
-
-updateDropdown()
-
-alert("Student Saved")
-
-}
-
-function calculateRanks(){
-
-students.forEach(s=>{
-s.total=s.s1+s.s2+s.s3+s.s4
-})
-
-students.sort((a,b)=>b.total-a.total)
-
-students.forEach((s,i)=>{
-
-if(i==0)s.rank="اول"
-else if(i==1)s.rank="دوم"
-else if(i==2)s.rank="سوم"
-else s.rank=i+1
-
-})
-
-}
+changeSubjects()
 
 function generate(){
 
-calculateRanks()
+let cls=document.getElementById("class").value
+let name=document.getElementById("name").value
 
-let index=document.getElementById("studentSelect").value
-let s=students[index]
+document.getElementById("rname").innerText=name
 
-document.getElementById("rname").innerText=s.name
-document.getElementById("rclass").innerText=s.class
+let table=document.getElementById("reportTable")
 
-document.getElementById("rs1").innerText=s.s1
-document.getElementById("rs2").innerText=s.s2
-document.getElementById("rs3").innerText=s.s3
-document.getElementById("rs4").innerText=s.s4
+table.innerHTML=`<tr>
+<th>مضمون</th>
+<th>کل نمبر</th>
+<th>حاصل کردہ</th>
+</tr>`
 
-let total=s.s1+s.s2+s.s3+s.s4
-let percent=(total/300)*100
+let total=0
+let max=0
+
+subjects[cls].forEach((s,i)=>{
+
+let m=Number(document.getElementById("m"+i).value)
+
+total+=m
+max+=s[1]
+
+table.innerHTML+=`
+<tr>
+<td>${s[0]}</td>
+<td>${s[1]}</td>
+<td>${m}</td>
+</tr>
+`
+
+})
+
+let percent=(total/max)*100
 
 let grade="F"
 
@@ -305,31 +294,30 @@ else if(percent>=35)grade="C"
 document.getElementById("total").innerText=total
 document.getElementById("percent").innerText=percent.toFixed(1)+"%"
 document.getElementById("grade").innerText=grade
-document.getElementById("rank").innerText=s.rank
+document.getElementById("result").innerText=(percent>=35?"پاس":"فیل")
 
 let title=document.getElementById("title")
 
-title.classList.remove("gold","green","blue")
+title.className="title"
 
-if(s.class=="nazira")title.classList.add("green")
-if(s.class=="momina2")title.classList.add("gold")
-if(s.class=="momina3")title.classList.add("blue")
+if(cls=="nazira")title.classList.add("green")
+if(cls=="momina2")title.classList.add("gold")
+if(cls=="momina3")title.classList.add("blue")
 
 }
 
-function downloadPDF(){
+function pdf(){
 
 let element=document.getElementById("report")
 
-html2pdf()
-.from(element)
-.set({
+html2pdf().set({
+
 margin:0,
-filename:"report-card.pdf",
+filename:'report-card.pdf',
 html2canvas:{scale:2},
-jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-})
-.save()
+jsPDF:{unit:'mm',format:'a4'}
+
+}).from(element).save()
 
 }
 
