@@ -1,228 +1,124 @@
 <!DOCTYPE html>
 <html lang="ur" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مکتب فاطمة للبنات - رپورٹ کارڈز</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Amiri:wght@700&display=swap" rel="stylesheet">
-    <style>
-        @page { size: A4 portrait; margin: 8mm; }
-        body { font-family: 'Noto Nastaliq Urdu', serif; background:#f5f5f5; padding:15px; direction:rtl; }
-        .page {
-            width: 210mm;
-            height: 297mm;
-            margin: 15px auto;
-            padding: 18mm 22mm;
-            background: white;
-            border: 11px solid var(--theme-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            position: relative;
-            page-break-after: always;
-        }
-        .watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-37deg);
-            font-size: 5.5rem;
-            color: rgba(0,100,0,0.06);
-            font-weight: bold;
-            pointer-events: none;
-        }
-        .header { text-align: center; margin-bottom: 15px; }
-        .header h1 {
-            font-family: 'Amiri', serif;
-            font-size: 2.9rem;
-            color: var(--theme-color);
-            margin: 0;
-        }
-        .address { font-size: 1.05rem; color: #333; margin: 5px 0 12px; }
-        .exam { font-size: 1.25rem; font-weight: bold; margin-bottom: 18px; }
-        .student-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin: 15px 0;
-            font-size: 1.08rem;
-        }
-        .student-info div {
-            background: #f9f9f9;
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-            font-size: 0.94rem;
-        }
-        th, td {
-            border: 1px solid #444;
-            padding: 6px 8px;
-            text-align: center;
-        }
-        th { background: var(--theme-color); color: white; }
-        .total-row { font-weight: bold; background: #f0f8f0; }
-        .result {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 22px;
-        }
-        .result-box {
-            width: 48%;
-            border: 3px solid var(--theme-color);
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .result-box span { font-size: 2.3rem; font-weight: bold; }
-        .signatures {
-            margin-top: 70px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.12rem;
-        }
-        .signature { text-align: center; width: 45%; }
-        .signature-line { border-top: 2px solid #222; width: 82%; margin: 15px auto 8px; }
-        .download-all {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 16px 45px;
-            background: #006400;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            cursor: pointer;
-            z-index: 1000;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</title>
+<style>
+  body { font-family: 'Jameel Noori Nastaleeq', serif; margin: 40px; }
+  .header { text-align: center; }
+  .logo { float: left; width: 100px; }
+  .watermark {
+    position: fixed; top: 40%; left: 20%;
+    font-size: 60px; color: rgba(0,0,0,0.1);
+    transform: rotate(-30deg);
+  }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+  th, td { border: 1px solid #000; padding: 8px; text-align: center; }
+  .bold { font-weight: bold; }
+  .pagebreak { page-break-after: always; }
+</style>
 </head>
 <body>
 
-<button class="download-all" onclick="downloadAllPDF()">تمام رپورٹ کارڈز ایک پی ڈی ایف میں ڈاؤن لوڈ کریں</button>
+<div class="header">
+  <img src="logo.png" class="logo">
+  <h1>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</h1>
+  <p>اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</p>
+</div>
 
-<div id="cards"></div>
+<div class="watermark">فاطمة للبنات</div>
 
 <script>
+// Student data from your PDFs
 const students = [
-    // Nazira Class - Green Theme
-    {name:"قاسم بی", parent:"شیخ ثانی صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:99},{n:"اردو",t:100,o:99}]},
-    {name:"نسرین", parent:"محمد عارف صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:69}]},
-    {name:"احمد النساء", parent:"محمد عبد الحلیم صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:59},{n:"عقائد",t:50,o:88},{n:"اردو",t:100,o:89}]},
-    {name:"عریشہ", parent:"محمد ثقیل صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:89},{n:"اردو",t:100,o:89}]},
-    {name:"سمیہ", parent:"محمد عقیل صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:99},{n:"اردو",t:100,o:99}]},
-    {name:"شاھین", parent:"محمد عبد الرحیم صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:100},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:100}]},
-    {name:"فرحانہ", parent:"محمد غوث صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:99},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:100}]},
-    {name:"رحیم النساء", parent:"شیخ علی صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:79},{n:"عقائد",t:50,o:74},{n:"اردو",t:100,o:69}]},
-    {name:"نازیہ کوثر", parent:"مرزا عظمت اللہ بیگ صاحب", className:"شعبہ ناظرہ قرآن", theme:"#006400",
-     subjects:[{n:"ناظرہ قرآن",t:100,o:90},{n:"عقائد",t:50,o:100},{n:"اردو",t:100,o:89}]},
-
-    // Momina Course - Gold Theme (from your second PDF)
-    {name:"زھرہ فاطمہ", parent:"شیخ محبوب علی صاحب", className:"مومنہ کورس", theme:"#B8860B",
-     subjects:[
-        {n:"ناظرہ قرآن",t:100,o:59},{n:"حفظ سورہ",t:100,o:90},{n:"حفظ احادیث",t:100,o:100},
-        {n:"مسنون دعائیں",t:100,o:100},{n:"عقائد",t:10,o:10},{n:"اردو تقریری",t:50,o:50},
-        {n:"عقائد اسلام",t:90,o:98},{n:"مسائل شرعی",t:100,o:99},{n:"سیرت النبی ﷺ",t:100,o:99},
-        {n:"اخلاقی تعلیم",t:100,o:99},{n:"عربی زبان",t:100,o:99},{n:"اردو تحریری",t:50,o:94}
-     ]}
+  {
+    name: "قاسم بى زوجم شيخ ثانى صاحب",
+    class: "ناظرہ",
+    rank: "سوم",
+    subjects: [
+      {name:"ناظرہ قرآن", max:100, obtained:90},
+      {name:"عقائد", max:50, obtained:35},
+      {name:"مسنون دعائیں", max:50, obtained:35},
+      {name:"اردو", max:100, obtained:60}
+    ]
+  },
+  {
+    name: "نسرين زوجم محمد عارف صاحب",
+    class: "ناظرہ",
+    rank: "دوم",
+    subjects: [
+      {name:"ناظرہ قرآن", max:100, obtained:95},
+      {name:"عقائد", max:50, obtained:50},
+      {name:"مسنون دعائیں", max:50, obtained:46},
+      {name:"اردو", max:100, obtained:100}
+    ]
+  },
+  {
+    name: "زهره فاطمة زوجم شيخ محبوب على صاحب",
+    class: "مومنة",
+    rank: "اول",
+    subjects: [
+      {name:"ناظرہ قرآن", max:100, obtained:95},
+      {name:"حفظ سورہ", max:100, obtained:90},
+      {name:"مسنون دعائیں", max:100, obtained:100},
+      {name:"حفظ حدیث", max:100, obtained:100},
+      {name:"عقائد", max:10, obtained:10},
+      {name:"اردو تقریری", max:50, obtained:50},
+      {name:"عقائد اسلام", max:90, obtained:89},
+      {name:"مسائل شرعی", max:100, obtained:99},
+      {name:"سیرت النبی ﷺ", max:100, obtained:99},
+      {name:"اخلاقی تعلیم", max:100, obtained:99},
+      {name:"عربی زبان", max:100, obtained:99},
+      {name:"اردو تحریری", max:50, obtained:49}
+    ]
+  }
 ];
 
-function getGrade(p) {
-    if (p >= 90) return "A+";
-    if (p >= 75) return "A";
-    if (p >= 60) return "B";
-    if (p >= 35) return "C";
-    return "F";
+// Function to generate report card
+function generateReport(student) {
+  let total = 0, obtained = 0;
+  let tableRows = "";
+  student.subjects.forEach(sub => {
+    tableRows += `<tr>
+      <td>${sub.name}</td>
+      <td>${sub.max}</td>
+      <td class="bold">${sub.obtained}</td>
+      <td>${sub.obtained >= 35 ? "پاس" : "فیل"}</td>
+    </tr>`;
+    total += sub.max;
+    obtained += sub.obtained;
+  });
+
+  let percentage = Math.round((obtained/total)*100);
+  let grade = "F";
+  if (percentage >= 75) grade = "A";
+  else if (percentage >= 60) grade = "B";
+  else if (percentage >= 45) grade = "C";
+  else if (percentage >= 35) grade = "D";
+
+  document.write(`
+    <div class="pagebreak">
+      <h2>رپورٹ کارڈ</h2>
+      <p>نام طالبہ: ${student.name}</p>
+      <p>کلاس: ${student.class}</p>
+      <table>
+        <tr><th>مضمون</th><th>کل نمبرات</th><th>حاصل نمبرات</th><th>نتیجہ</th></tr>
+        ${tableRows}
+      </table>
+      <p>مجموعی نمبرات: ${obtained} / ${total}</p>
+      <p>فیصد: ${percentage}%</p>
+      <p>گریڈ: ${grade}</p>
+      <p>درجہ: ${student.rank}</p>
+      <br><br>
+      <p>ناظم مکتب: ____________</p>
+      <p>صدر مدرس: ____________</p>
+    </div>
+  `);
 }
 
-function generateCards() {
-    const container = document.getElementById('cards');
-    container.innerHTML = '';
-
-    students.forEach(st => {
-        let totalMax = 0, obtained = 0, rows = '';
-        st.subjects.forEach(s => {
-            totalMax += s.t;
-            obtained += s.o;
-            rows += `<tr><td>\( {s.n}</td><td> \){s.t}</td><td>${s.o}</td></tr>`;
-        });
-
-        const perc = totalMax ? ((obtained / totalMax) * 100).toFixed(1) : 0;
-        const grade = getGrade(parseFloat(perc));
-
-        const html = `
-            <div class="page" style="--theme-color: ${st.theme};">
-                <div class="watermark">مکتب فاطمة للبنات</div>
-                <div class="header">
-                    <h1>مکتب فاطمة للبنات</h1>
-                    <div class="address">اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ</div>
-                    <div class="exam">سالانہ امتحان فروری ۲۰۲۵</div>
-                </div>
-
-                <div class="student-info">
-                    <div><strong>طالبہ کا نام :</strong> ${st.name}</div>
-                    <div><strong>${st.className.includes('ناظرہ') ? 'شوہر کا نام' : 'والد کا نام'} :</strong> ${st.parent}</div>
-                </div>
-                <div class="student-info">
-                    <div><strong>کورس :</strong> ${st.className}</div>
-                    <div><strong>تعلیمی سال :</strong> 2024-2025</div>
-                </div>
-
-                <table>
-                    <thead><tr><th>مضمون</th><th>کل نمبر</th><th>حاصل کردہ نمبر</th></tr></thead>
-                    <tbody>${rows}</tbody>
-                    <tfoot><tr class="total-row"><td>کل</td><td>\( {totalMax}</td><td> \){obtained}</td></tr></tfoot>
-                </table>
-
-                <div class="result">
-                    <div class="result-box">
-                        <strong>فیصد نمبر</strong><br>
-                        <span style="font-size:2.4rem;">${perc}%</span><br>
-                        <span style="color:\( {perc>=35?'#006400':'#c00'};"> \){perc>=35?'(PASS)':'(FAIL)'}</span>
-                    </div>
-                    <div class="result-box">
-                        <strong>گریڈ</strong><br>
-                        <span style="font-size:2.8rem;color:\( {st.theme};"> \){grade}</span>
-                    </div>
-                </div>
-
-                <div class="signatures">
-                    <div class="signature"><div class="signature-line"></div><strong>ناظمہ مکتب</strong></div>
-                    <div class="signature"><div class="signature-line"></div><strong>صدر مدرسہ</strong></div>
-                </div>
-            </div>`;
-        container.innerHTML += html;
-    });
-}
-
-function downloadAllPDF() {
-    html2pdf()
-        .from(document.getElementById('cards'))
-        .set({
-            margin: [8, 8, 8, 8],
-            filename: 'ReportCards_مکتب_فاطمة_للبنات.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2.8, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        })
-        .save();
-}
-
-window.onload = generateCards;
+// Generate all student reports
+students.forEach(s => generateReport(s));
 </script>
+
 </body>
 </html>
