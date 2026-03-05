@@ -3,143 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مکتب فاطمة للبنات - Excel Template</title>
+    <title>مکتب فاطمة للبنات - Final Clean Template</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        body { 
-            font-family: 'Noto Nastaliq Urdu', system-ui, sans-serif; 
-            text-align:center; 
-            padding:40px 20px; 
-            background:linear-gradient(135deg,#f0f8f0,#fff8e1); 
-            margin:0; 
-        }
-        h1 { color:#006400; font-size:2.9rem; margin:15px 0 5px; }
-        .btn { 
-            background:#006400; 
-            color:white; 
-            padding:20px 70px; 
-            font-size:1.6rem; 
-            border:none; 
-            border-radius:50px; 
-            cursor:pointer; 
-            margin-top:30px; 
-            box-shadow:0 10px 30px rgba(0,100,0,0.4); 
-            transition:0.3s;
-        }
+        body { font-family: 'Noto Nastaliq Urdu', Arial, sans-serif; text-align:center; padding:50px; background:linear-gradient(#f0f8f0, #fff8e1); }
+        h1 { color:#006400; font-size:2.8rem; }
+        .btn { background:#006400; color:white; padding:20px 70px; font-size:1.6rem; border:none; border-radius:50px; cursor:pointer; margin-top:30px; box-shadow:0 10px 30px rgba(0,100,0,0.4); }
         .btn:hover { background:#004d00; transform:scale(1.05); }
-        .btn:disabled { background:#555; cursor:wait; }
-        .info { 
-            max-width:820px; 
-            margin:30px auto; 
-            background:white; 
-            padding:35px; 
-            border-radius:20px; 
-            box-shadow:0 15px 40px rgba(0,0,0,0.15); 
-            font-size:1.25rem; 
-            line-height:2; 
-        }
-        .success { color:#006400; font-size:1.4rem; margin-top:20px; }
+        .note { margin-top:30px; font-size:1.1rem; color:#333; }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <h1>مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ</h1>
-    <p style="font-size:1.5rem;color:#333;">سالانہ امتحان فروری ۲۰۲۵ — Excel Template</p>
+    <p style="font-size:1.4rem; color:#006400;">سالانہ امتحان فروری ۲۰۲۵ — Final Clean Template</p>
     
-    <div class="info">
-        ✅ یہ بالکل تیار پروفیشنل ٹیمپلیٹ ہے<br><br>
-        • کور شیٹ (فہرست) + خودکار رینک<br>
-        • ناظرہ کلاس — سبز تھیم (4 مضامین)<br>
-        • مومنہ کورس — گولڈ تھیم (12 مضامین)<br>
-        • تمام فارمولے پہلے سے لگے ہوئے ہیں (کل، فیصد، گریڈ، پاس/فیل)<br>
-        • صرف حاصل کردہ نمبرات درج کریں — باقی سب خود حساب ہو جائے گا
+    <div class="note">
+        ✅ Dropdown + Auto Fill + Auto Grade + Auto Total<br>
+        ✅ All 9 students included<br>
+        ✅ No merge errors
     </div>
 
-    <button id="downloadBtn" class="btn" onclick="generateTemplate()">📥 ReportCards_Template.xlsx ڈاؤن لوڈ کریں</button>
-    <div id="status" class="success"></div>
+    <button class="btn" onclick="generateImprovedTemplate()">📥 Download Improved Clean Template</button>
 
     <script>
-        function generateTemplate() {
-            const btn = document.getElementById('downloadBtn');
-            const status = document.getElementById('status');
-            
-            btn.disabled = true;
-            btn.textContent = "تیار ہو رہا ہے...";
-            status.textContent = "";
+        function generateImprovedTemplate() {
+            const wb = XLSX.utils.book_new();
 
-            try {
-                // --- وہی پرانا ٹیمپلیٹ کوڈ (بغیر تبدیلی) ---
-                const wb = XLSX.utils.book_new();
+            // ==================== DATA SHEET ====================
+            const dataRows = [
+                ["طالبہ کا نام", "شوہر/والد کا نام", "مجموعہ", "ناظرہ قرآن", "عقائد", "اردو"],
+                ["قاسم بی", "شیخ ثانی صاحب", 300, 90, 100, 100],
+                ["نسرین", "محمد عارف صاحب", 300, 95, 100, 96],
+                ["احمد النساء", "محمد عبد الحلیم صاحب", 300, 95, 88, 98],
+                ["عریشہ", "محمد ثقیل صاحب", 300, 100, 98, 98],
+                ["سمیہ", "محمد عقیل صاحب", 300, 90, 99, 99],
+                ["شاہین", "محمد عبد الرحیم صاحب", 300, 100, 100, 100],
+                ["فرحانہ", "محمد غوث صاحب", 300, 99, 100, 100],
+                ["رحیم النساء", "شیخ علی صاحب", 300, 97, 47, 96],
+                ["نازیہ کوثر", "مرزا عظمت اللہ بیگ صاحب", 300, 90, 100, 98]
+            ];
 
-                // کور شیٹ
-                const indexData = [
-                    ["مکتب فاطمة للبنات"],
-                    ["سالانہ امتحان فروری ۲۰۲۵"],
-                    ["فہرست طلبہ"],
-                    [],
-                    ["سیریل", "طالبہ کا نام", "کلاس", "کل نمبر", "حاصل نمبر", "فیصد", "گریڈ"]
-                ];
-                const wsIndex = XLSX.utils.aoa_to_sheet(indexData);
-                wsIndex['!merges'] = [{s:{r:0,c:0},e:{r:0,c:6}},{s:{r:1,c:0},e:{r:1,c:6}},{s:{r:2,c:0},e:{r:2,c:6}}];
-                for(let c=0; c<7; c++) {
-                    const cell = XLSX.utils.encode_cell({r:4,c});
-                    if(!wsIndex[cell]) wsIndex[cell]={v:"",t:"s"};
-                    wsIndex[cell].s = {font:{bold:true,color:{rgb:"FFFFFF"}},fill:{fgColor:{rgb:"006400"}},alignment:{horizontal:"center"}};
+            const wsData = XLSX.utils.aoa_to_sheet(dataRows);
+            XLSX.utils.book_append_sheet(wb, wsData, "Data");
+
+            // ==================== MAIN REPORT SHEET ====================
+            const reportRows = [
+                ["مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ"],
+                ["اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ"],
+                ["سالانہ امتحان فروری ۲۰۲۵"],
+                [],
+                ["طالبہ کا نام", "", "شوہر/والد کا نام", ""],
+                ["", "", "", ""],
+                [],
+                ["مضمون", "کل نمبرات", "حاصل نمبرات"],
+                ["ناظرہ قرآن", 100, ""],
+                ["عقائد", 100, ""],
+                ["اردو", 100, ""],
+                [],
+                ["کل", 300, "=SUM(C9:C11)"],
+                ["فیصد", "=ROUND(C12/300*100,1)", ""],
+                ["گریڈ", "=IF(C13>=75,\"A\",IF(C13>=60,\"B\",IF(C13>=45,\"C\",IF(C13>=35,\"D\",\"F\"))))", ""],
+                ["نتیجہ", "=IF(C13>=35,\"پاس\",\"فیل\")", ""]
+            ];
+
+            const wsReport = XLSX.utils.aoa_to_sheet(reportRows);
+
+            // Add dropdown in cell B5 (طالبہ کا نام)
+            wsReport['B5'] = { v: "", t: "s" };
+            wsReport['!dataValidation'] = {
+                'B5': {
+                    sqref: 'B5',
+                    formula1: 'Data!$A$2:$A$10',
+                    type: 'list',
+                    allowBlank: true,
+                    showDropDown: true
                 }
-                XLSX.utils.book_append_sheet(wb, wsIndex, "فہرست");
+            };
 
-                // ناظرہ ٹیمپلیٹ
-                const naziraRows = [
-                    ["مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ"],["اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ"],["سالانہ امتحان فروری ۲۰۲۵"],[],
-                    ["طالبہ کا نام :","","","","کلاس :","ناظرہ قرآن"],
-                    ["والد/شوہر کا نام :","","","","تعلیمی سال :","2024-2025"],[],
-                    ["مضمون","کل نمبرات","حاصل نمبرات","نتیجہ"],
-                    ["ناظرہ قرآن",100,"","=IF(C9>=35,\"پاس\",\"فیل\")"],
-                    ["عقائد",50,"","=IF(C10>=35,\"پاس\",\"فیل\")"],
-                    ["مسنون دعائیں",50,"","=IF(C11>=35,\"پاس\",\"فیل\")"],
-                    ["اردو",100,"","=IF(C12>=35,\"پاس\",\"فیل\")"],[],
-                    ["کل","=SUM(B9:B12)","=SUM(C9:C12)","=IF(C14>=105,\"پاس\",\"فیل\")"],
-                    ["فیصد","=ROUND(C14/B14*100,1)","",""],
-                    ["گریڈ","=IF(D15>=75,\"A\",IF(D15>=60,\"B\",IF(D15>=45,\"C\",IF(D15>=35,\"D\",\"F\"))))","",""],
-                    [],["ناظم مکتب","","","صدر مدرسہ"]
-                ];
-                const wsNazira = XLSX.utils.aoa_to_sheet(naziraRows);
-                wsNazira['!merges'] = [{s:{r:0,c:0},e:{r:0,c:3}},{s:{r:1,c:0},e:{r:1,c:3}},{s:{r:2,c:0},e:{r:2,c:3}},{s:{r:4,c:0},e:{r:4,c:1}},{s:{r:4,c:4},e:{r:4,c:5}},{s:{r:5,c:0},e:{r:5,c:1}},{s:{r:5,c:4},e:{r:5,c:5}}];
-                XLSX.utils.book_append_sheet(wb, wsNazira, "ناظرہ ٹیمپلیٹ");
+            // Add formulas
+            wsReport['D5'] = { f: '=INDEX(Data!$B$2:$B$10, MATCH(B5, Data!$A$2:$A$10, 0))' };   // Husband Name
+            wsReport['C9'] = { f: '=INDEX(Data!$D$2:$D$10, MATCH(B5, Data!$A$2:$A$10, 0))' };   // Nazira Quran
+            wsReport['C10'] = { f: '=INDEX(Data!$E$2:$E$10, MATCH(B5, Data!$A$2:$A$10, 0))' };  // Aqaid
+            wsReport['C11'] = { f: '=INDEX(Data!$F$2:$F$10, MATCH(B5, Data!$A$2:$A$10, 0))' };  // Urdu
 
-                // مومنہ ٹیمپلیٹ
-                const mominaRows = [
-                    ["مَكْتَبُ فَاطِمَةَ لِلْبَنَاتِ"],["اندر قلعہ، مقابل مسجد نمرہ، کھمم، تلنگانہ"],["سالانہ امتحان فروری ۲۰۲۵"],[],
-                    ["طالبہ کا نام :","","","","کلاس :","مومنہ کورس"],
-                    ["والد/شوہر کا نام :","","","","تعلیمی سال :","2024-2025"],[],
-                    ["مضمون","کل نمبرات","حاصل نمبرات","نتیجہ"]
-                ];
-                const subs = [["ناظرہ قرآن",100],["حفظ سورہ",100],["حفظ حدیث",100],["مسنون دعائیں",100],["عقائد",100],["اردو تقریری",50],["عقائد اسلام",90],["مسائل شرعی",100],["سیرت النبی ﷺ",100],["اخلاقی تعلیم",100],["عربی زبان",100],["اردو تحریری",50]];
-                subs.forEach(s => mominaRows.push([s[0],s[1],"","=IF(C"+(mominaRows.length+1)+">=35,\"پاس\",\"فیل\")"]));
-                
-                const tRow = 8 + subs.length;
-                mominaRows.push([]);
-                mominaRows.push(["کل","=SUM(B9:B"+(tRow-1)+")","=SUM(C9:C"+(tRow-1)+")","=IF(C"+tRow+">=350,\"پاس\",\"فیل\")"]);
-                mominaRows.push(["فیصد","=ROUND(C"+tRow+"/B"+tRow+"*100,1)","",""]);
-                mominaRows.push(["گریڈ","=IF(D"+(tRow+1)+">=75,\"A\",IF(D"+(tRow+1)+">=60,\"B\",IF(D"+(tRow+1)+">=45,\"C\",IF(D"+(tRow+1)+">=35,\"D\",\"F\"))))","",""]);
-                mominaRows.push([],["ناظم مکتب","","","صدر مدرسہ"]);
+            XLSX.utils.book_append_sheet(wb, wsReport, "Report Card");
 
-                const wsMomina = XLSX.utils.aoa_to_sheet(mominaRows);
-                wsMomina['!merges'] = [{s:{r:0,c:0},e:{r:0,c:3}},{s:{r:1,c:0},e:{r:1,c:3}},{s:{r:2,c:0},e:{r:2,c:3}},{s:{r:4,c:0},e:{r:4,c:1}},{s:{r:4,c:4},e:{r:4,c:5}},{s:{r:5,c:0},e:{r:5,c:1}},{s:{r:5,c:4},e:{r:5,c:5}}];
-                XLSX.utils.book_append_sheet(wb, wsMomina, "مومنہ ٹیمپلیٹ");
-
-                XLSX.writeFile(wb, "ReportCards_Template.xlsx");
-
-                status.innerHTML = "✅ ڈاؤن لوڈ مکمل! فائل کھولیں اور استعمال کریں۔";
-            } catch(e) {
-                status.innerHTML = "❌ ایرر: " + e.message;
-                console.error(e);
-            }
-
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.textContent = "📥 ReportCards_Template.xlsx ڈاؤن لوڈ کریں";
-            }, 1500);
+            // Download
+            XLSX.writeFile(wb, "Improved_ReportCards_Template.xlsx");
+            alert("✅ Template downloaded successfully!\n\nHow to use:\n1. Open the file\n2. Click on طالبہ کا نام cell\n3. Select any student from dropdown\n4. All data will auto-fill");
         }
     </script>
 </body>
